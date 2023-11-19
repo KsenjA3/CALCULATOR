@@ -227,13 +227,11 @@ class CalculateFace extends JFrame  implements ActionListener {
                                 }
                             }
                         else {                         //число идет после знака sqrt
-                            System.out.println(" ввод dNumber= "+dNumber);
+
                             for (int i=0; i<figureSqrt; i ++)
                                 dNumber =Math.sqrt(dNumber);
-                            System.out.println(" sqrt dNumber= "+dNumber);
-                            dNumber=dNumberSqrt * dNumber;
-                            System.out.println(" sqrt dNumber*dNumberSqrt= "+dNumber);
 
+                            dNumber=dNumberSqrt * dNumber;
                             dResult = Operations.result(func, dResultFormerSqrt, dNumber) ;
                         }
 
@@ -249,14 +247,14 @@ class CalculateFace extends JFrame  implements ActionListener {
                 }
                 textRezult.setText(strResult);                 //запись на экран результата
 
-
+/*
                 System.out.println(" dResult= "+dResult);
                 System.out.println(" dResultFormer= "+dResultFormer);
                 System.out.println(" dResultFormerSqrt= "+dResultFormerSqrt);
                 System.out.println(" dNumberSqrt= "+dNumberSqrt);
                 System.out.println(" dNumber = "+dNumber);
                 System.out.println();
-
+*/
             }
         });
         return b;
