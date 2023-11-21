@@ -15,7 +15,6 @@ import java.util.regex.*;
 
 class CalculateFace extends JFrame  implements ActionListener {
 
-
     //размеры окон калькулятора
     int widthSize, widthSizeMain, heightSizeMain, heightSizeText, heightSizeKey;
 
@@ -28,26 +27,18 @@ class CalculateFace extends JFrame  implements ActionListener {
     JPanel cardPanel, commonPanel, engineerPanel, itPanel;
     JPanel textPanel, keyPanel, container;
 
-
-
     //ОКНО ВЫВОДА
     JLabel textRezult, textLog;                     //текстовые области вывода
     JScrollPane scrollinput;
     JTextPane textInput;
 
     ArrayList <JTextPane> arrLog;                   // для журнала
-    ArrayList <Double> arrD;
-    ArrayList <String> arrSign;
-
-
 
                         //ОКНО ВВОДА
                                                 //button simple calculation
     JButton b, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint;
     JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
     JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
-
-    Double memory;
 
     int N = 0;                                  // ограничение количества вводимых цифр в число
 
@@ -68,9 +59,9 @@ class CalculateFace extends JFrame  implements ActionListener {
     int figureSqrt = 1;                 // amount Sqrt successively
 
     double dResultFormertMemory;        //for  Memory rolled back numbers, wich in front of Memory
+    Double memory;
+    CalculateCurrentInput calculateCurrent;
 
-    Pattern patN;
-    Matcher mat;
 
 
                         // ВИД
@@ -92,6 +83,25 @@ class CalculateFace extends JFrame  implements ActionListener {
 
 
     CalculateFace() {
+
+         N = 0;
+         strNumber = "0";             //вводимое число
+         dNumber=0.0;                 //для вычислений
+         dResult=0.0;
+         strInput ="   ";             // для формирования вывода на экран ввода
+         strResult=" ";               // конечный текст выводимый в окне результата
+         func=null;                   //тип функции
+
+         dResultFormer=0.0;           // saved results former calculations
+         nameFormer="";               // necessary for work with mltidigited numbers
+         nameSign="";                 // % и деление на 0, ввод числа после %
+         strLabelSign="";             //for % because number changed after %
+         dResultPercent=0.0;          //for % under mltidigited number
+
+      // dResultFormerSqrt;           //dResult = dResultFormerSqrt [+-*/] dNumberSqrt* Sqrt (dNumber)
+         dNumberSqrt = 1;             //dResult = dNumberSqrt* Sqrt (dNumber)
+         figureSqrt = 1;
+
                         //цветовая гамма
         paneColor = new Color(231, 223, 232);
         bColor = new Color(236, 231, 237);
@@ -105,10 +115,10 @@ class CalculateFace extends JFrame  implements ActionListener {
         ResultFont= new Font("Arial", Font.PLAIN, FRONT_TEXT_RESULT);
         LogFont =new Font("Arial", Font.PLAIN, 15);
 
-
                         //для сеточно-контейнерной компановки keyPanel и textPanel
         gbag = new GridBagLayout();
         gbc = new GridBagConstraints();
+
                         //создание корневой панели
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -180,7 +190,8 @@ class CalculateFace extends JFrame  implements ActionListener {
         b.setBorder(borderButton);
 
         b.addActionListener((e) -> {
-                        //возврат шрифта после его изменений в =
+
+                            //возврат шрифта после его изменений в =
             textRezult.setFont(ResultFont);
             StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
             textInput.setParagraphAttributes(textInputAttributes, true);
@@ -247,15 +258,6 @@ class CalculateFace extends JFrame  implements ActionListener {
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
                 }
                 textRezult.setText(strResult);                 //запись на экран результата
-
-
-                System.out.println(" dResult= "+dResult);
-                System.out.println(" dResultFormer= "+dResultFormer);
-                System.out.println(" dResultFormerSqrt= "+dResultFormerSqrt);
-                System.out.println(" dNumberSqrt= "+dNumberSqrt);
-                System.out.println(" dNumber = "+dNumber);
-                System.out.println();
-
             }
         });
         return b;
@@ -271,7 +273,8 @@ class CalculateFace extends JFrame  implements ActionListener {
         b.setBorder(borderButton);
 
         b.addActionListener((e) -> {
-                                            //возврат шрифта после его изменений в =
+
+                                    //возврат шрифта после его изменений в =
             textRezult.setFont(ResultFont);
             StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
             textInput.setParagraphAttributes(textInputAttributes, true);
@@ -305,8 +308,12 @@ class CalculateFace extends JFrame  implements ActionListener {
                             }
                         else
                             if (name.equals(" √ ")) {
-                                switch (strInput.substring(strInput.length() - 1)) {
-                                    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
+                                System.out.println(strInput.charAt(strInput.length() - 1));
+
+                                switch (strInput.charAt(strInput.length() - 1)) {
+                                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
+                             //   switch (strInput.substring(strInput.length() - 1)) {
+                               //     case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
                                         dNumberSqrt = dNumber;                        //для dRezult N*sqrt()
                                         textInput.setText(strInput =strInput+ name); // ввод Number*sqrt (Number)
                                     }
@@ -453,7 +460,6 @@ class CalculateFace extends JFrame  implements ActionListener {
 
                                         // деление на 0 исключить
                             if ((dNumber == 0.0) && (nameSign.equals(" / "))) {
-               //                 dResultFormer=dResult;
                                 strResult = "деление на 0 не возможно";
                                 Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                                         bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
@@ -527,11 +533,28 @@ class CalculateFace extends JFrame  implements ActionListener {
                             figureSqrt=1;
                         }
                         case "C" -> {
+                            calculateCurrent = new CalculateCurrentInput ();
+                          //  switch (strInput.substring(strInput.length() - 1)) {
+                           //    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
+                                                    // окно ввовда
+                            switch (strInput.charAt(strInput.length() - 1)) {
+                                case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
+                                    textInput.setText(strInput = strInput.substring(0,strInput.length() - 1));
+                                    dResult= calculateCurrent.calculateInput(strInput);
+                                 //   strNumber=strNumber.substring(0,strNumber.length() - 1);
+                                }
+                                default ->{
+                                    textInput.setText(strInput = strInput.substring(0, strInput.length() - 3));
+                                    dResult= calculateCurrent.calculateInput(strInput);
+
+                                }
+                            }
+                            strResult = "=" + Service.printNumber(dResult);
+                            textRezult.setText(strResult);
+
                             Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,bPoint,
                                     bMemoryAdd, bMemoryDel, bMemoryHold,  bDel,
                                     bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical );
-
-
                         }
                     }
                 }

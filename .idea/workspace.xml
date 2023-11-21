@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="cleanSqrt">
+    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="DelOneSign">
+      <change afterPath="$PROJECT_DIR$/src/CalculateCurrentInput.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculateFace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateFace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/СalculateCurrentInput.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,9 +57,16 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.CalculateDemo">
     <configuration name="CalculateDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CalculateDemo" />
+      <module name="CALCULATION" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
       <module name="CALCULATION" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -65,6 +75,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.CalculateDemo" />
+        <item itemvalue="Application.Test" />
         <item itemvalue="Application.CalculateDemo" />
       </list>
     </recent_temporary>
@@ -72,7 +83,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d7fcc861-a8eb-4c2c-9df9-ec9b35196514" name="Changes" comment="" />
+      <changelist id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="memory" />
       <created>1700409392359</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -106,7 +117,28 @@
       <option name="project" value="LOCAL" />
       <updated>1700436298620</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="memory">
+      <created>1700509782050</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1700509782050</updated>
+    </task>
+    <task id="LOCAL-00006" summary="DdelOneSign">
+      <created>1700572671847</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1700572671847</updated>
+    </task>
+    <task id="LOCAL-00007" summary="DelOneSign">
+      <created>1700589406397</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1700589406397</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -122,39 +154,42 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="cleanSqrt" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleanSqrt" />
+    <MESSAGE value="memoryButton" />
+    <MESSAGE value="DdelOneSign" />
+    <MESSAGE value="DelOneSign" />
+    <option name="LAST_COMMIT_MESSAGE" value="DelOneSign" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>173</line>
+          <line>183</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>141</line>
+          <line>151</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>264</line>
+          <line>266</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>430</line>
+          <line>437</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>485</line>
-          <option name="timeStamp" value="7" />
+          <line>534</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>93</line>
+          <line>84</line>
           <properties class="CalculateFace" method="&lt;init&gt;">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

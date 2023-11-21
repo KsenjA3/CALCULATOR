@@ -3,17 +3,19 @@ import javax.swing.*;
 
 public class Service {
 
-    //блокировка клавиш при ошибке ввода
+    //block keys
     static void blockedAll(JButton... v) {
         for (JButton b : v)
             b.setEnabled(false);
     }
-    //разблокировка клавиш при ошибке ввода
+
+    //unblock keys
     static void unblockedAll(JButton... v) {
         for (JButton b : v)
             b.setEnabled(true);
     }
-    // возвращает String из Double, учитывая что вводимое число м.б. int
+
+    // return String from Double, consider that number can be Integer
     static String printNumber (Double d) {
         String str =Double.toString(d);
         if (str.substring(str.indexOf('.')+1).equals("0"))
