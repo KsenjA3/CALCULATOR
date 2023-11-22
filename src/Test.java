@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 class Test {
-    String strInput = "25 +  √ 9 - 2 √ 1";
+    String strInput = "3 + 8 √ 4";
    static String strNumber = "41";      //inner number
     Double dResult;
 

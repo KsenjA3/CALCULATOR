@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="DelOneSign">
+    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="currentCalculate">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculateCurrentInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateCurrentInput.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculateFace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateFace.java" afterDir="false" />
@@ -27,6 +27,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
@@ -75,6 +76,8 @@
       <list>
         <item itemvalue="Application.CalculateDemo" />
         <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.CalculateDemo" />
         <item itemvalue="Application.CalculateDemo" />
       </list>
     </recent_temporary>
@@ -144,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700607146774</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="currentCalculate">
+      <created>1700683749529</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1700683749529</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -162,15 +172,17 @@
     <MESSAGE value="cleanSqrt" />
     <MESSAGE value="memoryButton" />
     <MESSAGE value="DdelOneSign" />
-    <MESSAGE value="DelOneSign" />
-    <option name="LAST_COMMIT_MESSAGE" value="DelOneSign" />
+    <MESSAGE value="DelSign" />
+    <MESSAGE value="OneSign" />
+    <MESSAGE value="currentCalculate" />
+    <option name="LAST_COMMIT_MESSAGE" value="currentCalculate" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>183</line>
+          <line>185</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -180,33 +192,78 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>278</line>
+          <line>284</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>449</line>
+          <line>453</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>546</line>
+          <line>552</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>241</line>
+          <line>246</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>234</line>
+          <line>239</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>233</line>
+          <line>238</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
+          <line>237</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>146</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateCurrentInput.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
@@ -216,6 +273,18 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
+          <line>50</line>
+          <properties field="dResultFormer" class="CalculateFace" />
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
+          <line>51</line>
+          <properties field="nameFormer" class="CalculateFace" />
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

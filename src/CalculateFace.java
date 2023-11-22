@@ -40,27 +40,27 @@ class CalculateFace extends JFrame  implements ActionListener {
     JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
     JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
 
-    int N = 0;                                  // ограничение количества вводимых цифр в число
+    private int N;                                  // ограничение количества вводимых цифр в число
 
-    String strNumber = "0";                    //вводимое число
-    Double dNumber=0.0, dResult=0.0;           //для вычислений
-    String  strInput ="   ";                     // для формирования вывода на экран ввода
-    String  strResult=" ";                  // конечный текст выводимый в окне результата
-    calculate func=null;                       //тип функции
+    private String strNumber;                    //вводимое число
+    private Double dNumber, dResult;           //для вычислений
+    private String  strInput;                     // для формирования вывода на экран ввода
+    private String  strResult;                  // конечный текст выводимый в окне результата
+    private calculate func;                       //тип функции
 
-    double dResultFormer=0.0;           // saved results former calculations
-    String nameFormer="";               // necessary for work with mltidigited numbers
-    String nameSign="";                // % и деление на 0, ввод числа после %
-    String strLabelSign="";            //for % because number changed after %
-    double dResultPercent=0.0;         //for % under mltidigited number
+ //   double dResultFormer=0.0;           // saved results former calculations
+  //  String nameFormer="";               // necessary for work with mltidigited numbers
+    private String nameSign;                // % и деление на 0, ввод числа после %
+    private String strLabelSign;            //for % because number changed after %
+    private double dResultPercent;         //for % under mltidigited number
 
-    double dResultFormerSqrt;           //dResult = dResultFormerSqrt [+-*/] dNumberSqrt* Sqrt (dNumber)
-    double dNumberSqrt = 1;             //dResult = dNumberSqrt* Sqrt (dNumber)
-    int figureSqrt = 1;                 // amount Sqrt successively
+ //   double dResultFormerSqrt;           //dResult = dResultFormerSqrt [+-*/] dNumberSqrt* Sqrt (dNumber)
+  //  double dNumberSqrt = 1;             //dResult = dNumberSqrt* Sqrt (dNumber)
+ //   int figureSqrt = 1;                 // amount Sqrt successively
 
-    double dResultFormertMemory;        //for  Memory rolled back numbers, wich in front of Memory
-    Double memory;
-    CalculateCurrentInput calculateCurrent;
+    private double dResultFormertMemory;        //for  Memory rolled back numbers, wich in front of Memory
+    private Double memory;
+    private CalculateCurrentInput calculateCurrent;
 
 
 
@@ -92,15 +92,15 @@ class CalculateFace extends JFrame  implements ActionListener {
          strResult=" ";               // конечный текст выводимый в окне результата
          func=null;                   //тип функции
 
-         dResultFormer=0.0;           // saved results former calculations
-         nameFormer="";               // necessary for work with mltidigited numbers
+      //   dResultFormer=0.0;           // saved results former calculations
+      //   nameFormer="";               // necessary for work with mltidigited numbers
          nameSign="";                 // % и деление на 0, ввод числа после %
          strLabelSign="";             //for % because number changed after %
          dResultPercent=0.0;          //for % under mltidigited number
 
       // dResultFormerSqrt;           //dResult = dResultFormerSqrt [+-*/] dNumberSqrt* Sqrt (dNumber)
-         dNumberSqrt = 1;             //dResult = dNumberSqrt* Sqrt (dNumber)
-         figureSqrt = 1;
+       //  dNumberSqrt = 1;             //dResult = dNumberSqrt* Sqrt (dNumber)
+     //    figureSqrt = 1;
 
                         //цветовая гамма
         paneColor = new Color(231, 223, 232);
@@ -152,6 +152,8 @@ class CalculateFace extends JFrame  implements ActionListener {
     //create calculation Buttons all types
     void makeButtons() {
 
+        calculateCurrent = new CalculateCurrentInput ();
+
                 // простой
         b1 = createNumberButton("1");
         b2 = createNumberButton("2");
@@ -199,7 +201,7 @@ class CalculateFace extends JFrame  implements ActionListener {
             if (N<15) { N++;
                                 // исключить в результате повторную операцию при работе
                                 //с дробным и многоразрядным числом
-                nameFormer=strInput.substring( strInput.length() - 1);
+ //               nameFormer=strInput.substring( strInput.length() - 1);
 
                 strNumber = strNumber + name;             // формируем вводимое число типа String
                 dNumber = Double.parseDouble(strNumber);  // из String в Double
@@ -216,9 +218,12 @@ class CalculateFace extends JFrame  implements ActionListener {
                     Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
                             bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
-                    dResultFormer=dResult;
+ //                   dResultFormer=dResult;
 
                 } else {
+
+                    dResult= calculateCurrent.calculateInput(strInput);
+  /*
                     if (func == null) {
 
                         if (nameSign.equals(" √ ")) {
@@ -258,13 +263,14 @@ class CalculateFace extends JFrame  implements ActionListener {
                             dNumber=dNumberSqrt * dNumber;
                             dResult = Operations.result(func, dResultFormerSqrt, dNumber) ;
                         }
-
+*/
                     strResult =  "=" + Service.printNumber(dResult);
                     Service.unblockedAll(bPercent);       // работа % без ошибок
                 }
 
-                if (name.equals(".")) {          // разблокировка клавиш при попытке деления на 0
+                if (name.equals(".")) {
                     Service.blockedAll(bPoint);   //в числе не м.б. две точки
+                                                // разблокировка клавиш при попытке деления на 0
                     Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                             bResult, bMemoryAdd, bMemoryDel, bMemoryHold,  bDel,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
@@ -291,8 +297,8 @@ class CalculateFace extends JFrame  implements ActionListener {
             StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
             textInput.setParagraphAttributes(textInputAttributes, true);
 
-            if (!name.equals(" √ "))            // if memory used after numbers, to ignore this numbers
-                dResultFormertMemory= dResult;
+ //           if (!name.equals(" √ "))            // if memory used after numbers, to ignore this numbers
+  //              dResultFormertMemory= dResult;
 
             strNumber="0";                      //подготовка для ввода очередного числа
             N=0;
@@ -311,26 +317,24 @@ class CalculateFace extends JFrame  implements ActionListener {
                                 if (name.equals(" √ ")) {
                                                 //несколько sqrt подряд
                                     textInput.setText(strInput = strInput + name);
-                                    figureSqrt++;
+  //                                  figureSqrt++;
                                 } else          //замена sqrt другим знаком
                                     textInput.setText(strInput = strInput.substring(0, strInput.length() - 3) + name);
                             else {              // после числа знак
                                 textInput.setText(strInput = strInput + name);
-                                dNumberSqrt=dResult; // для типа 2√4√4=2*2*2=8
+  //                              dNumberSqrt=dResult; // для типа 2√4√4=2*2*2=8
                             }
                         else
                             if (name.equals(" √ ")) {
-                                System.out.println(strInput.charAt(strInput.length() - 1));
 
                                 switch (strInput.charAt(strInput.length() - 1)) {
                                     case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
-                             //   switch (strInput.substring(strInput.length() - 1)) {
-                               //     case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
-                                        dNumberSqrt = dNumber;                        //для dRezult N*sqrt()
+
+   //                                     dNumberSqrt = dNumber;                        //для dRezult N*sqrt()
                                         textInput.setText(strInput =strInput+ name); // ввод Number*sqrt (Number)
                                     }
                                     default -> {
-                                        dNumberSqrt=1;
+  //                                      dNumberSqrt=1;
                                         textInput.setText(strInput = name);      // начало ввада с sqrt
                                     }
                                 }
@@ -341,7 +345,7 @@ class CalculateFace extends JFrame  implements ActionListener {
                         switch (strInput.substring(strInput.length() - 3)) {
                             case  " √ " -> {
                                 if (name.equals(" √ ")) {
-                                    figureSqrt++;
+   //                                 figureSqrt++;
                                     textInput.setText(strInput = strInput + name);
                                 }else
                                             //если два знака подряд + sqrt(*)  ->  на *
@@ -355,16 +359,16 @@ class CalculateFace extends JFrame  implements ActionListener {
                             case " + ", " - ", " * ", " / " -> {
                                 if (name.equals(" √ "))  {         // записываем sqrt после +-*/
                                     textInput.setText(strInput = strInput + name);
-                                    dResultFormerSqrt= dResult;
-                                    dNumberSqrt = 1;
+  //                                  dResultFormerSqrt= dResult;
+  //                                  dNumberSqrt = 1;
                                 } else                              // замена +-/* на +-*/
                                     textInput.setText(strInput = strInput.substring(0, strInput.length() - 3) + name);
 
                             }
                             default ->{         // для иных знаков
                                 if (name.equals(" √ ")) {
-                                    dResultFormerSqrt= dResultFormer;
-                                    dNumberSqrt = dNumber;
+  //                                  dResultFormerSqrt= dResultFormer;
+   //                                 dNumberSqrt = dNumber;
                                 }
                                 textInput.setText(strInput = strInput + name);
                             }
@@ -416,9 +420,9 @@ class CalculateFace extends JFrame  implements ActionListener {
 
                     func = null;
                     strInput= "   ";            // ввод числа после %
-                    dNumberSqrt=dResult;        // sqrt после %
+   //                 dNumberSqrt=dResult;        // sqrt после %
                     nameSign=" ";
-                    figureSqrt=1;
+  //                  figureSqrt=1;
                 }
                 case " √ " -> {
                 }
@@ -435,9 +439,9 @@ class CalculateFace extends JFrame  implements ActionListener {
 
                     func= null;
                     strInput= "   ";                      // ввод числа после =
-                    dNumberSqrt=dResult;                  // sqrt после =
+ //                   dNumberSqrt=dResult;                  // sqrt после =
                     nameSign=" ";
-                    figureSqrt=1;
+   //                 figureSqrt=1;
                 }
             }
             nameSign = name;
@@ -478,15 +482,17 @@ class CalculateFace extends JFrame  implements ActionListener {
                                         bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
                             } else {
                                 if (func == null) {
-                                    if (nameSign.equals(" √ ")) {
+           /*                         if (nameSign.equals(" √ ")) {
                                         for (int i = 0; i < figureSqrt; i++)
                                             dNumber = Math.sqrt(dNumber);
                                         dResult = dNumberSqrt * dNumber;
 
-                                    } else dResult = dNumber;          //начало работы,после =,после АС
+                                    } else
+            */                            dResult = dNumber;          //начало работы,после =,после АС
 
                                 } else  // func!=null
-                                    if (!nameSign.equals(" √ "))
+                                    dResult= calculateCurrent.calculateInput(strInput);
+            /*                        if (!nameSign.equals(" √ "))
                                              dResult = Operations.result(func, dResultFormertMemory, dNumber);
                                     else {                         //число идет после знака sqrt
                                         for (int i = 0; i < figureSqrt; i++)
@@ -494,7 +500,7 @@ class CalculateFace extends JFrame  implements ActionListener {
                                         dNumber = dNumberSqrt * dNumber;
                                         dResult = Operations.result(func, dResultFormertMemory, dNumber);
                                 }
-
+            */
                                 strResult = "=" + Service.printNumber(dResult);
                                 Service.unblockedAll(bPercent);       // работа % без ошибок
                             }
@@ -541,13 +547,12 @@ class CalculateFace extends JFrame  implements ActionListener {
                             strResult="0";              // AC затем =, textRez
 
                             nameSign=" ";               //после sqrt
-                            dNumberSqrt=1;
-                            figureSqrt=1;
+              //              dNumberSqrt=1;
+             //               figureSqrt=1;
                         }
                         case "C" -> {
-                            calculateCurrent = new CalculateCurrentInput ();
-                          //  switch (strInput.substring(strInput.length() - 1)) {
-                           //    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
+
+
                                                     // окно ввовда
                             switch (strInput.charAt(strInput.length() - 1)) {
                                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {

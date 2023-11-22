@@ -4,27 +4,35 @@ class CalculateCurrentInput {
     ArrayList<Double> arrD;
     ArrayList <calculate> arrSign;
 
-    String strNumber;      //inner number
-    double dNumber;
-    String strSign = " ";        //inner sign
-    calculate func=null;
-    double  dResult;         //for calculation
+     String strNumber;      //inner number
+     double dNumber;
+   //  String strSign;        //inner sign
+     calculate func;
+     double  dResult;         //for calculation
 
-    double dNSqrt;              //service sqrt
-    int figureSqrt;
+     double dNSqrt;              //service sqrt
+     int figureSqrt;
 
-    boolean isNumber = false;
-    boolean wasSqrt = false;
-
-
+     boolean wasNumber;
+     boolean wasSqrt;
 
     // calculate result from string
     double calculateInput (String strInput) {
+     //   strSign = " ";
+        func=null;
         strNumber = "0";
-        dNumber=0.0;
+     //   dNumber=0.0;
         dResult=0.0;
-        figureSqrt=1;
 
+        figureSqrt=1;
+        dNSqrt=1;
+
+        wasNumber = false;
+        wasSqrt = false;
+
+        System.out.println("strInput ="+strInput);
+                                    // delete space
+        strInput= strInput.replaceAll(" ", "");
         System.out.println(strInput);
 
         arrD = new ArrayList<>();
@@ -34,105 +42,98 @@ class CalculateCurrentInput {
 
             switch (strInput.charAt(i)) {
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
-                    strNumber=strNumber+strInput.charAt(i);
-                    isNumber= true;
-                                            //запись последнего числа
-                    if (i==strInput.length()-1){
-                                            //если последнее число под sqrt
-                        if (wasSqrt){
-                            dNumber=Double.parseDouble(strNumber);
-                            for (int j = 0; j < figureSqrt; j++)
-                                dNumber = dNSqrt * Math.sqrt(dNumber);
-                            arrD.add(dNumber);
-                        }else {             // число после -+*/
-                            dNumber=Double.parseDouble(strNumber);
-                            arrD.add(dNumber);
+                    //create number
+                    strNumber = strNumber + strInput.charAt(i);
+                    System.out.println("strNumber = " + strNumber);
+
+                    //if sqrt before number
+                    if (wasSqrt) {
+                        dNumber = Double.parseDouble(strNumber);
+                        for (int j = 0; j < figureSqrt; j++){
+                            dNumber = Math.sqrt(dNumber);
+                            System.out.println("вычисления корня" + dNumber);
                         }
+                        dNumber= dNSqrt * dNumber;
+                    } else           // число после -+*/
+                        dNumber = Double.parseDouble(strNumber);
 
-                    }
-                }
-                default -> {
-                                    // получение числа double
-                    dNumber=Double.parseDouble(strNumber);
-                    strNumber= "0";
-                                    //String знака
-                    if ((i+2)<strInput.length())
-                        strSign = strInput.substring(i, i+3);
-
-                            // если знак sqrt
-                    if (strSign.equals(" √ ")){
-
-
-                        if (isNumber){      //если перед sqrt стоит число
-                            dNSqrt=dNumber;
-                                            //если число после sqrt
-                            if ((i+3)==strInput.length())
-                                arrD.add(dNumber);
-
-                            System.out.println("dNSqrt - "+dNSqrt);
-                            System.out.println("число после sqrt при strInput.length() - "+strInput.length());
-                            System.out.println("= (i+3) - "+(i+3));
-                            System.out.println();
-
-                        } else {            // если знак после sqrt
-                            dNSqrt = 1;
-                            if (wasSqrt) // если несколько sqrt подряд
-                                figureSqrt++;
-                        }
-                        wasSqrt=true;   //маркер sqrt
-
-                    }       //если знак -+*/
-                    else {
-                            // расчет нескольких sqrt подряд
-                        if (wasSqrt) {
-                            for (int j = 0; j < figureSqrt; j++)
-                                dNumber = dNSqrt * Math.sqrt(dNumber);
-                        }
-                            //добавление числа в arrayList
+                    //write last number
+                    if (i == strInput.length() - 1) {
                         arrD.add(dNumber);
+                        System.out.println("last Number =" + dNumber);
+                    }
 
-                            //добавление знака -+*/ в arrayList
-                        switch (strSign) {
-                            case " + " ->
-                                    func = Operations::plus;
+                    wasNumber = true;
+                }case'√'->{
 
-                            case " - " ->
-                                    func= Operations::minus;
-                            case " * " ->
-                                    func= Operations::multiply;
-
-                            case " / " ->
-                                    func = Operations::divide;
+                    if (wasNumber) {
+                        //if the last sign sqrt
+                        if ((i + 1) == strInput.length()) {
+                            arrD.add(dNumber);
+                            System.out.println(" √ last Number =" + dNumber);
                         }
-                        arrSign.add(func);
+                        else             // dNumber * √
+                            dNSqrt = dNumber;
 
-                        wasSqrt=false;
-/*
-                        System.out.println(strSign);
-                        System.out.println(func);
-                        System.out.println();
-  */                  }
-                            //т.к. знак состоит из 3 char
-                    i=i+2;
-                    isNumber=false;
+
+                    }else           // если знак после sqrt
+
+                        if (wasSqrt) // если несколько sqrt подряд
+                            figureSqrt++;
+
+                    wasNumber= false;
+                    wasSqrt=true;
+                    strNumber=" ";
+
+                }case '+' -> {
+                    arrSign.add(Operations::plus);
+                    arrD.add(dNumber);
+                    strNumber=" ";
+                    wasNumber=false;
+                    wasSqrt=false;
+                    dNSqrt = 1;
+                }case '-' -> {
+                    arrSign.add(Operations::minus);
+                    arrD.add(dNumber);
+                    strNumber=" ";
+                    wasNumber=false;
+                    wasSqrt=false;
+                    dNSqrt = 1;
+                }case '*' -> {
+                    arrSign.add(Operations::multiply);
+                    arrD.add(dNumber);
+                    strNumber=" ";
+                    wasNumber=false;
+                    wasSqrt=false;
+                    dNSqrt = 1;
+                }case '/' -> {
+                    arrSign.add(Operations::divide);
+                    arrD.add(dNumber);
+                    strNumber=" ";
+                    wasNumber=false;
+                    wasSqrt=false;
+                    dNSqrt = 1;
                 }
+
             }
         }
 
 
-/*
+        System.out.println("+Number ="+dNumber);
+        System.out.println(func);
+
+        System.out.print("arrD.size()>1= " );
+        System.out.println(arrD.size()>1);
+
         for (int i = 0; i<arrD.size(); i++)
             System.out.println(i+" - "+ arrD.get(i));
 
         for (int i = 0; i<arrSign.size(); i++)
             System.out.println(i+" - "+ arrSign.get(i));
 
-
-*/
-
+                            //calculate the resultate
         if (arrD.size()>0)
             dResult = arrD.get(0);
-
 
         if (arrD.size()>1){
             int j;
@@ -141,10 +142,9 @@ class CalculateCurrentInput {
                 if (j < arrSign.size())
                     dResult = Operations.result(arrSign.get(j), dResult, arrD.get(i));
             }
-        }else dResult=0;
-
-
-
+        }
+        System.out.println(dResult);
+        System.out.println();
 
         return dResult;
     }
