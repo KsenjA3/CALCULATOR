@@ -231,11 +231,23 @@ class CalculateFace extends JFrame  implements ActionListener {
                     else
                         if (!nameSign.equals(" √ "))
                             switch (nameFormer) {      // исключить в результате повторную операцию при работе с дробным числом и многоразрядным
-                                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." ->
-                                        dResult = Operations.result(func, dResultFormer, dNumber);
+                                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
+                                    dResult = Operations.result(func, dResultFormer, dNumber);
+                                    System.out.println("dResultFormer = "+ dResultFormer);
+                                    System.out.println("dNumber = "+ dNumber);
+                                    System.out.println("dResult = "+ dResult);
+                                    System.out.println();
+
+                                }
                                 default -> {
+
                                     dResultFormer = dResult;
                                     dResult = Operations.result(func, dResult, dNumber);
+
+                                    System.out.println("dResultFormer = "+ dResultFormer);
+                                    System.out.println("dNumber = "+ dNumber);
+                                    System.out.println("dResult = "+ dResult);
+                                    System.out.println();
                                 }
                             }
                         else {                         //число идет после знака sqrt
@@ -541,7 +553,8 @@ class CalculateFace extends JFrame  implements ActionListener {
                                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
                                     textInput.setText(strInput = strInput.substring(0,strInput.length() - 1));
                                     dResult= calculateCurrent.calculateInput(strInput);
-                                 //   strNumber=strNumber.substring(0,strNumber.length() - 1);
+                                    if (strNumber.length()>1)
+                                        strNumber=strNumber.substring(0,strNumber.length() - 1);
                                 }
                                 default ->{
                                     textInput.setText(strInput = strInput.substring(0, strInput.length() - 3));

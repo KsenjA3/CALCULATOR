@@ -61,7 +61,7 @@ class CalculateCurrentInput {
 
                             // если знак sqrt
                     if (strSign.equals(" √ ")){
-                        wasSqrt=true;   //маркер sqrt
+
 
                         if (isNumber){      //если перед sqrt стоит число
                             dNSqrt=dNumber;
@@ -70,14 +70,16 @@ class CalculateCurrentInput {
                                 arrD.add(dNumber);
 
                             System.out.println("dNSqrt - "+dNSqrt);
-                            System.out.println("strInput.length() - "+strInput.length());
-                            System.out.println("(i+3) - "+(i+3));
+                            System.out.println("число после sqrt при strInput.length() - "+strInput.length());
+                            System.out.println("= (i+3) - "+(i+3));
                             System.out.println();
 
-                        } else {            // если несколько sqrt подряд
+                        } else {            // если знак после sqrt
                             dNSqrt = 1;
-                            figureSqrt++;
+                            if (wasSqrt) // если несколько sqrt подряд
+                                figureSqrt++;
                         }
+                        wasSqrt=true;   //маркер sqrt
 
                     }       //если знак -+*/
                     else {
@@ -105,11 +107,11 @@ class CalculateCurrentInput {
                         arrSign.add(func);
 
                         wasSqrt=false;
-
+/*
                         System.out.println(strSign);
                         System.out.println(func);
                         System.out.println();
-                    }
+  */                  }
                             //т.к. знак состоит из 3 char
                     i=i+2;
                     isNumber=false;
@@ -118,7 +120,7 @@ class CalculateCurrentInput {
         }
 
 
-
+/*
         for (int i = 0; i<arrD.size(); i++)
             System.out.println(i+" - "+ arrD.get(i));
 
@@ -126,17 +128,20 @@ class CalculateCurrentInput {
             System.out.println(i+" - "+ arrSign.get(i));
 
 
-
+*/
 
         if (arrD.size()>0)
             dResult = arrD.get(0);
 
-        int j;
-        for (int i = 1; i<arrD.size(); i++){
-            j=i-1;
-                if (j<arrSign.size())
+
+        if (arrD.size()>1){
+            int j;
+            for (int i = 1; i<arrD.size(); i++) {
+                j = i - 1;
+                if (j < arrSign.size())
                     dResult = Operations.result(arrSign.get(j), dResult, arrD.get(i));
-        }
+            }
+        }else dResult=0;
 
 
 
