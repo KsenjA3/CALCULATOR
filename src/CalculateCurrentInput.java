@@ -30,10 +30,10 @@ class CalculateCurrentInput {
         wasNumber = false;
         wasSqrt = false;
 
-        System.out.println("strInput ="+strInput);
+//        System.out.println("strInput ="+strInput);
                                     // delete space
         strInput= strInput.replaceAll(" ", "");
-        System.out.println(strInput);
+//        System.out.println(strInput);
 
         arrD = new ArrayList<>();
         arrSign=new ArrayList<>();
@@ -44,14 +44,14 @@ class CalculateCurrentInput {
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
                     //create number
                     strNumber = strNumber + strInput.charAt(i);
-                    System.out.println("strNumber = " + strNumber);
+  //                  System.out.println("strNumber = " + strNumber);
 
                     //if sqrt before number
                     if (wasSqrt) {
                         dNumber = Double.parseDouble(strNumber);
                         for (int j = 0; j < figureSqrt; j++){
                             dNumber = Math.sqrt(dNumber);
-                            System.out.println("вычисления корня" + dNumber);
+//                            System.out.println("вычисления корня" + dNumber);
                         }
                         dNumber= dNSqrt * dNumber;
                     } else           // число после -+*/
@@ -60,7 +60,7 @@ class CalculateCurrentInput {
                     //write last number
                     if (i == strInput.length() - 1) {
                         arrD.add(dNumber);
-                        System.out.println("last Number =" + dNumber);
+  //                      System.out.println("last Number =" + dNumber);
                     }
 
                     wasNumber = true;
@@ -70,7 +70,7 @@ class CalculateCurrentInput {
                         //if the last sign sqrt
                         if ((i + 1) == strInput.length()) {
                             arrD.add(dNumber);
-                            System.out.println(" √ last Number =" + dNumber);
+  //                          System.out.println(" √ last Number =" + dNumber);
                         }
                         else             // dNumber * √
                             dNSqrt = dNumber;
@@ -143,8 +143,8 @@ class CalculateCurrentInput {
                     dResult = Operations.result(arrSign.get(j), dResult, arrD.get(i));
             }
         }
-        System.out.println(dResult);
-        System.out.println();
+ //       System.out.println(dResult);
+ //       System.out.println();
 
         return dResult;
     }
