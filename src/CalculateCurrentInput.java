@@ -1,26 +1,31 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 class CalculateCurrentInput {
-    ArrayList<Double> arrD;
+    ArrayList<BigDecimal> arrD;
     ArrayList <calculate> arrSign;
 
      String strNumber;      //inner number
-     double dNumber;
+     BigDecimal dNumber;
      calculate func;
-     double  dResult;         //for calculation
-     double dNSqrt;              //service sqrt
+     BigDecimal  dResult;         //for calculation
+     BigDecimal dNSqrt;              //service sqrt
+     BigDecimal dResultPercent;
      int figureSqrt;
      boolean wasNumber;
      boolean wasSqrt;
+     double doubleResult;
+     double doubleNumber;
 
     // calculate result from string
     double calculateInput (String strInput) {
 
         func=null;
         strNumber = "0";
-        dResult=0.0;
+        dResult=new BigDecimal(0.0);
+
         figureSqrt=1;
-        dNSqrt=1;
+        dNSqrt=new BigDecimal(1);
         wasNumber = false;
         wasSqrt = false;
 
@@ -42,15 +47,18 @@ class CalculateCurrentInput {
 
                     //if sqrt before number
                     if (wasSqrt) {
-                        dNumber = Double.parseDouble(strNumber);
+                        doubleNumber= Double.parseDouble(strNumber);
+                        dNumber = new BigDecimal (doubleNumber);
+
                         for (int j = 0; j < figureSqrt; j++){
-                            dNumber = Math.sqrt(dNumber);
+                            dNumber = Operations.sqrt(dNumber);
 //                            System.out.println("вычисления корня" + dNumber);
                         }
-                        dNumber= dNSqrt * dNumber;
-                    } else           // число после -+*/
-                        dNumber = Double.parseDouble(strNumber);
-
+                        dNumber= Operations.multiply(dNSqrt,dNumber);
+                    } else {          // число после -+*/
+                        doubleNumber= Double.parseDouble(strNumber);
+                        dNumber = new BigDecimal (doubleNumber);
+                    }
                     //write last number
                     if (i == strInput.length() - 1) {
                         arrD.add(dNumber);
@@ -69,7 +77,6 @@ class CalculateCurrentInput {
                         else             // dNumber * √
                             dNSqrt = dNumber;
 
-
                     }else           // если знак после sqrt
 
                         if (wasSqrt) // если несколько sqrt подряд
@@ -85,28 +92,28 @@ class CalculateCurrentInput {
                     strNumber=" ";
                     wasNumber=false;
                     wasSqrt=false;
-                    dNSqrt = 1;
+                    dNSqrt=new BigDecimal(1);
                 }case '-' -> {
                     arrSign.add(Operations::minus);
                     arrD.add(dNumber);
                     strNumber=" ";
                     wasNumber=false;
                     wasSqrt=false;
-                    dNSqrt = 1;
+                    dNSqrt=new BigDecimal(1);
                 }case '*' -> {
                     arrSign.add(Operations::multiply);
                     arrD.add(dNumber);
                     strNumber=" ";
                     wasNumber=false;
                     wasSqrt=false;
-                    dNSqrt = 1;
+                    dNSqrt=new BigDecimal(1);
                 }case '/' -> {
                     arrSign.add(Operations::divide);
                     arrD.add(dNumber);
                     strNumber=" ";
                     wasNumber=false;
                     wasSqrt=false;
-                    dNSqrt = 1;
+                    dNSqrt=new BigDecimal(1);
                 }
 
             }
@@ -140,29 +147,35 @@ class CalculateCurrentInput {
  //       System.out.println(dResult);
  //       System.out.println();
 
-        return dResult;
+        doubleResult = dResult.doubleValue();
+        return doubleResult;
     }
 
 
-    double calculatePersent (calculate funcPerc, String nameSign, double dResultPercent, double dNumberPerc, double dResultPerc) {
-        dResult =dResultPerc;
-        dNumber=dNumberPerc;
+    double calculatePersent (calculate funcPerc, String nameSign, double dResultPercentIn, double dNumberIn, double dResultIn) {
+        dResult =new BigDecimal(dResultIn);
+        dNumber= new BigDecimal(dNumberIn);
+        dResultPercent = new BigDecimal(dResultPercentIn);
         func=funcPerc;
 
         if (func == null) {
-            dResult = dResult / 100.0;
+            dResult = Operations.divide(dResult, new BigDecimal(100) );
 
         } else {
             switch (nameSign) {
-                case " + ", " - " -> dNumber = dResultPercent * dNumber / 100.0;
-                case " * ", " / " -> dNumber = dNumber / 100.0;
+                case " + ", " - " -> dNumber = Operations.divide(
+                                                        Operations.multiply(dResultPercent,dNumber),
+                                                        new BigDecimal(100));
+     //                   dResultPercent * dNumber / 100.0;
+                case " * ", " / " -> dNumber = Operations.divide(dResult, new BigDecimal(100));
             }
             dResult = Operations.result(func, dResultPercent, dNumber);
 
         }
 
 
-        return dResult;
+        doubleResult = dResult.doubleValue();
+        return doubleResult;
     }
 
 

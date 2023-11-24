@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+
 public interface calculate {
-    double func (double d1, double d2 );
+    BigDecimal func (BigDecimal d1, BigDecimal d2 );
 }

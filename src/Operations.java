@@ -1,25 +1,30 @@
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 public class Operations {
 
-    static  double plus (double d1, double d2) {
-        return d1+d2;
+    static MathContext mathContext= new MathContext(15);
+
+    static BigDecimal plus (BigDecimal d1, BigDecimal d2) {
+        return d1.add(d2, mathContext);
     }
 
-    static  double minus (double d1, double d2) {
-        return d1-d2;
+    static  BigDecimal minus (BigDecimal d1, BigDecimal d2) {
+        return d1.subtract(d2, mathContext);
     }
 
-    static  double divide (double d1, double d2) {
-        return d1/d2;
+    static  BigDecimal divide (BigDecimal d1, BigDecimal d2) {
+        return d1.divide(d2, mathContext);
     }
 
-    static  double multiply(double d1, double d2) {
-        return d1*d2;
+    static  BigDecimal multiply(BigDecimal d1, BigDecimal d2) {
+        return d1.multiply(d2, mathContext);
     }
 
-    static  double radical (double d1, double d2) { return Math.sqrt(d1);}
+    static  BigDecimal sqrt (BigDecimal d1) { return d1.sqrt(mathContext);}
 
 
-    static  double result (calculate f, double d1, double d2) {
+    static  BigDecimal result (calculate f, BigDecimal d1, BigDecimal d2) {
         return f.func(d1, d2);
     }
 
