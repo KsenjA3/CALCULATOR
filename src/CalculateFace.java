@@ -38,20 +38,19 @@ class CalculateFace extends JFrame  implements ActionListener {
     JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
     JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
 
-    private int N;                                  // ограничение количества вводимых цифр в число
+    private int N;                                  // restriction amount  input figures to number
 
-    private String strNumber;                    //вводимое число
-    private Double dNumber, dResult;           //для вычислений
-    private String  strInput;                     // для формирования вывода на экран ввода
-    private String  strResult;                  // конечный текст выводимый в окне результата
-    private calculate func;                       //тип функции
+    private String strNumber;               //inner number
+    private Double dNumber;
+    private Double dResult;                 //result of calculation
+    private String  strInput;               // for output creation  to input window
+    private String  strResult;              // result String content  for result window
+    private calculate func;                 //type function
 
-    private String nameSign;                // % и деление на 0, ввод числа после %
-    private String strLabelSign;            //for % because number changed after %
-    private double dResultPercent;         //for % under mltidigited number
+    private String nameSign;                // % and  divide for 0, input number after %
+    private String strInputFormerSign;      //for % because number changed after %
+    private double dResultPercent;          // for %, result before former sign
 
-
-    private double dResultFormertMemory;        //for  Memory rolled back numbers, wich in front of Memory
     private Double memory;
     private CalculateCurrentInput calculateCurrent;
 
@@ -60,8 +59,8 @@ class CalculateFace extends JFrame  implements ActionListener {
                         // ВИД
     GridBagLayout gbag;
     GridBagConstraints gbc;
-    Color paneColor, bColor, signColor, bMColor;    //используемые цвета
-    Border borderButton, borderText;                //используемые границы элементов
+    Color paneColor, bColor, signColor, bMColor;    //used colors
+    Border borderButton, borderText;                //borders used by elements
 
                             //используемые шрифты
     Font ButtonFont, ButtonFontM,  MenuFont, InputFont, ResultFont, LogFont;
@@ -78,15 +77,15 @@ class CalculateFace extends JFrame  implements ActionListener {
     CalculateFace() {
 
          N = 0;
-         strNumber = "0";             //вводимое число
-         dNumber=0.0;                 //для вычислений
+         strNumber = "0";
+         dNumber=0.0;
          dResult=0.0;
-         strInput ="   ";             // для формирования вывода на экран ввода
-         strResult=" ";               // конечный текст выводимый в окне результата
-         func=null;                   //тип функции
+         strInput ="   ";
+         strResult=" ";
+         func=null;
 
          nameSign="";                 // % и деление на 0, ввод числа после %
-         strLabelSign="";             //for % because number changed after %
+         strInputFormerSign="";             //for % because number changed after %
          dResultPercent=0.0;          //for % under mltidigited number
 
                         //цветовая гамма
@@ -337,15 +336,13 @@ class CalculateFace extends JFrame  implements ActionListener {
                     Service.unblockedAll(bPercent);       // работа % без ошибок
 
                     if (func == null) {
-                        dResult = dResult / 100.0;
+                        dResult = calculateCurrent.calculatePersent(func, nameSign,
+                                                                    dResultPercent, dNumber, dResult);
                         textInput.setText(Service.printNumber(dResult));
                     } else {
-                        switch (nameSign) {
-                            case " + ", " - " -> dNumber = dResultPercent * dNumber / 100.0;
-                            case " * ", " / " -> dNumber = dNumber / 100.0;
-                        }
-                        dResult = Operations.result(func, dResultPercent, dNumber);
-                        textInput.setText(strInput = strLabelSign + Service.printNumber(dNumber));
+                        dResult = calculateCurrent.calculatePersent(func, nameSign,
+                                                                    dResultPercent, dNumber, dResult);
+                        textInput.setText(strInput = strInputFormerSign + Service.printNumber(dNumber));
                     }
                     strResult="=" +Service.printNumber(dResult);
                     textRezult.setText( strResult);
@@ -372,7 +369,7 @@ class CalculateFace extends JFrame  implements ActionListener {
                 }
             }
             nameSign = name;
-            strLabelSign=strInput;
+            strInputFormerSign=strInput;
         });
         return b;
     }

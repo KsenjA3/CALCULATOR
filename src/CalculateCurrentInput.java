@@ -6,27 +6,21 @@ class CalculateCurrentInput {
 
      String strNumber;      //inner number
      double dNumber;
-   //  String strSign;        //inner sign
      calculate func;
      double  dResult;         //for calculation
-
      double dNSqrt;              //service sqrt
      int figureSqrt;
-
      boolean wasNumber;
      boolean wasSqrt;
 
     // calculate result from string
     double calculateInput (String strInput) {
-     //   strSign = " ";
+
         func=null;
         strNumber = "0";
-     //   dNumber=0.0;
         dResult=0.0;
-
         figureSqrt=1;
         dNSqrt=1;
-
         wasNumber = false;
         wasSqrt = false;
 
@@ -148,6 +142,37 @@ class CalculateCurrentInput {
 
         return dResult;
     }
+
+
+    double calculatePersent (calculate funcPerc, String nameSign, double dResultPercent, double dNumberPerc, double dResultPerc) {
+        dResult =dResultPerc;
+        dNumber=dNumberPerc;
+        func=funcPerc;
+
+        if (func == null) {
+            dResult = dResult / 100.0;
+
+        } else {
+            switch (nameSign) {
+                case " + ", " - " -> dNumber = dResultPercent * dNumber / 100.0;
+                case " * ", " / " -> dNumber = dNumber / 100.0;
+            }
+            dResult = Operations.result(func, dResultPercent, dNumber);
+
+        }
+
+
+        return dResult;
+    }
+
+
+
+
+
+
+
+
+
 }
 
 

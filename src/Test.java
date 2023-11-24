@@ -13,9 +13,9 @@ class Test {
      }
 
     public static void main(String[] args) {
-        Test t = new Test();
+       Test t = new Test();
         System.out.println(t.tt(strNumber));
-
+      //   System.out.println(25+"h");
     }
 
 }
