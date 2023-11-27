@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.*;
+import java.io.*;
 
 
 class CalculateFace extends JFrame  implements ActionListener {
@@ -37,6 +38,12 @@ class CalculateFace extends JFrame  implements ActionListener {
     JButton b, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint;
     JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
     JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
+/*
+    Action b1Action, b2Action, b3Action, b4Action, b5Action, b6Action, b7Action, b8Action, b9Action, b0Action, bPointAction;
+    Action bPlusAction, bMinusAction, bDivideAction, bMultiplyAction, bPercentAction,  bResultAction, bRadicalAction;
+    Action bMemoryAddAction, bMemoryDelAction, bMemoryHoldAction, bClearAction, bDelAction;
+*/
+
 
     private int N;                                  // restriction amount  input figures to number
 
@@ -53,7 +60,6 @@ class CalculateFace extends JFrame  implements ActionListener {
 
     private Double memory;
     private CalculateCurrentInput calculateCurrent;
-
 
 
                         // ВИД
@@ -113,13 +119,13 @@ class CalculateFace extends JFrame  implements ActionListener {
 
         calculateCurrent = new CalculateCurrentInput ();
 
-        makeButtons();                      //кнопки калькулятора
+        makeButtons();                      //buttons calculator
 
-        makeCommonCalculate();              //типы калькуляторов
-        makeEngineerCalculate();
+        makeCommonCalculate();              //types calculator
+        makeEngineerCalculate();            //after buttons because buttons on screen
         makeITCalculate();
 
-        makeTextPanel();                     //экран ввода
+        makeTextPanel();                     //input panel
 
         container.add(textPanel);
         container.add(keyPanel);
@@ -137,49 +143,75 @@ class CalculateFace extends JFrame  implements ActionListener {
         pack();
     }
 
+
+
     //create calculation Buttons all types
     void makeButtons() {
 
-                // простой
-        b1 = createNumberButton("1");
-        b2 = createNumberButton("2");
-        b3 = createNumberButton("3");
-        b4 = createNumberButton("4");
-        b5 = createNumberButton("5");
-        b6 = createNumberButton("6");
-        b7 = createNumberButton("7");
-        b8 = createNumberButton("8");
-        b9 = createNumberButton("9");
-        b0 = createNumberButton("0");
-        bPoint = createNumberButton(".");
+        // SIMPLE
 
-        bPlus = createSignButton(" + ");
-        bMinus = createSignButton(" - ");
-        bDivide = createSignButton(" / ");
-        bMultiply = createSignButton(" * ");
-        bPercent = createSignButton(" % ");
-        bRadical = createSignButton(" √ ");
-        bResult = createSignButton(" = ");
+                    //Numbers
 
-        bClear = createWorkButton("AC");
-        bDel = createWorkButton("C");
-        bMemoryAdd = createWorkButton("M+");
-        bMemoryDel = createWorkButton("M-");
-        bMemoryHold = createWorkButton("MR");
+        b1 = createNumberButton( new CreateActionNumberButton("1"), "1", KeyStroke.getKeyStroke('1'));
+        b2 = createNumberButton(  new CreateActionNumberButton("2"), "2", KeyStroke.getKeyStroke('2'));
+        b3 = createNumberButton( new CreateActionNumberButton("3"), "3", KeyStroke.getKeyStroke('3'));
+        b4 = createNumberButton( new CreateActionNumberButton("4"), "4", KeyStroke.getKeyStroke('4'));
+        b5 = createNumberButton(new CreateActionNumberButton("5"), "5", KeyStroke.getKeyStroke('5'));
+        b6 = createNumberButton(new CreateActionNumberButton("6"), "6", KeyStroke.getKeyStroke('6'));
+        b7 = createNumberButton(new CreateActionNumberButton("7"), "7", KeyStroke.getKeyStroke('7'));
+        b8 = createNumberButton(new CreateActionNumberButton("8"), "8", KeyStroke.getKeyStroke('8'));
+        b9 = createNumberButton(new CreateActionNumberButton("9"), "9", KeyStroke.getKeyStroke('9'));
+        b0 = createNumberButton(new CreateActionNumberButton("0"), "0", KeyStroke.getKeyStroke('0'));
+        bPoint = createNumberButton(new CreateActionNumberButton("."), ".", KeyStroke.getKeyStroke('.'));
+
+                    //Operations
+
+        bPlus = createSignButton(new CreateSignButton (" + "), " + ", KeyStroke.getKeyStroke('+'));
+        bMinus = createSignButton(new CreateSignButton (" - "), " - ", KeyStroke.getKeyStroke('-'));
+        bDivide = createSignButton(new CreateSignButton (" / "), " / ", KeyStroke.getKeyStroke('/'));
+        bMultiply = createSignButton(new CreateSignButton (" * "), " * ", KeyStroke.getKeyStroke('*'));
+        bPercent = createSignButton(new CreateSignButton (" % "), " % ", KeyStroke.getKeyStroke('%'));
+        bResult = createSignButton(new CreateSignButton (" = "), " = ", KeyStroke.getKeyStroke('='));
+        bRadical = createSignButton(new CreateSignButton (" √ "), " √ ", KeyStroke.getKeyStroke("sqrt"));
+
+                    //Delete and Memory
+        bClear = createWorkButton(new CreateWorkButton ("AC"), "AC", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        bDel = createWorkButton(new CreateWorkButton ("C"), "C", KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        bMemoryAdd = createWorkButton(new CreateWorkButton ("M+"), "M+", KeyStroke.getKeyStroke(KeyEvent.VK_ADD,
+                                                                                                        InputEvent.CTRL_DOWN_MASK));
+        bMemoryDel = createWorkButton(new CreateWorkButton ("M-"), "M-", KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT,
+                                                                                                        InputEvent.CTRL_DOWN_MASK));
+        bMemoryHold = createWorkButton(new CreateWorkButton ("MR"), "MR", KeyStroke.getKeyStroke(KeyEvent.VK_M, 0));
+
         Service.blockedAll(bMemoryHold);
     }
 
+
     //create number Buttons
-    JButton createNumberButton(String name) {
-        b = new JButton(name);
+    JButton createNumberButton(Action bAction, String name, KeyStroke keyStroke) {
+        b = new JButton(bAction);
+        b.getInputMap  (JComponent.WHEN_IN_FOCUSED_WINDOW).put (keyStroke, name);
+        b.getActionMap().put(name,bAction);
+
         b.setBackground(bColor);
         b.setFont(ButtonFont);
         borderButton = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         b.setBorder(borderButton);
 
-        b.addActionListener((e) -> {
+        return b;
+    }
 
-                            //возврат шрифта после его изменений в =
+   //create Actions for number Buttons
+    class CreateActionNumberButton extends AbstractAction {
+
+        CreateActionNumberButton (String nameButton) {
+            super(nameButton);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = e.getActionCommand();
+                                            //возврат шрифта после его изменений в =
             textRezult.setFont(ResultFont);
             StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
             textInput.setParagraphAttributes(textInputAttributes, true);
@@ -201,8 +233,6 @@ class CalculateFace extends JFrame  implements ActionListener {
                     Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
                             bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
-
-
                 } else {
 
                     dResult= calculateCurrent.calculateInput(strInput);
@@ -213,29 +243,48 @@ class CalculateFace extends JFrame  implements ActionListener {
 
                 if (name.equals(".")) {
                     Service.blockedAll(bPoint);   //в числе не м.б. две точки
-                                                // разблокировка клавиш при попытке деления на 0
+                    // разблокировка клавиш при попытке деления на 0
                     Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
-                            bResult, bMemoryAdd, bMemoryDel, bMemoryHold,  bDel,
+                            bResult, bMemoryAdd, bMemoryDel,   bDel,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
                 }
                 textRezult.setText(strResult);                 //запись на экран результата
             }
-        });
-        return b;
+        }
     }
 
 
-    //create  operation Buttons
-    JButton createSignButton(String name) {
-        b = new JButton(name);
+    //create  operations Buttons
+    JButton createSignButton(Action bAction, String name, KeyStroke keyStroke) {
+        b = new JButton(bAction);
+        b.getInputMap  (JComponent.WHEN_IN_FOCUSED_WINDOW).put (keyStroke, name);
+        b.getActionMap().put(name,bAction);
+
+        if (name ==" = ") {
+            b.getInputMap  (JComponent.WHEN_IN_FOCUSED_WINDOW).put (KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0), "name=");
+            b.getActionMap().put("name=",bAction);
+        }
+
         b.setBackground(signColor);
         b.setFont(ButtonFont);
         borderButton = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         b.setBorder(borderButton);
 
-        b.addActionListener((e) -> {
+        return b;
+    }
 
-                                    //возврат шрифта после его изменений в =
+    //create operations for number Buttons
+    class CreateSignButton extends AbstractAction {
+        String name;
+        CreateSignButton (String nameButton) {
+            super(nameButton);
+            name = nameButton;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            //возврат шрифта после его изменений в =
             textRezult.setFont(ResultFont);
             StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
             textInput.setParagraphAttributes(textInputAttributes, true);
@@ -246,7 +295,7 @@ class CalculateFace extends JFrame  implements ActionListener {
             Service.unblockedAll(bPoint);       // разрешение на дробные числа
             Service.blockedAll(bPercent);       // работа % без ошибок
 
-                        //запись в в окно ввода
+            //запись в в окно ввода
             if (!name.equals(" % "))       // delete % in input screen
                 if (!name.equals(" = "))    // delete = in input screen
 
@@ -255,7 +304,7 @@ class CalculateFace extends JFrame  implements ActionListener {
                         if (nameSign.equals(" √ "))
                             if (strInput.substring(strInput.length() - 3).equals(" √ "))
                                 if (name.equals(" √ ")) {
-                                                //несколько sqrt подряд
+                                    //несколько sqrt подряд
                                     textInput.setText(strInput = strInput + name);
 
                                 } else          //замена sqrt другим знаком
@@ -265,27 +314,25 @@ class CalculateFace extends JFrame  implements ActionListener {
 
                             }
                         else
-                            if (name.equals(" √ ")) {
+                        if (name.equals(" √ ")) {
 
-                                switch (strInput.charAt(strInput.length() - 1)) {
-                                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'->
+                            switch (strInput.charAt(strInput.length() - 1)) {
+                                case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'->
                                         textInput.setText(strInput =strInput+ name); // ввод Number*sqrt (Number)
 
-                                    default ->
+                                default ->
                                         textInput.setText(strInput = name);      // начало ввада с sqrt
-
-                                }
-                            } else              // начало ввода с [-+*/] или число [-+*/]
-                                textInput.setText(strInput=Service.printNumber(dResult)+name);
+                            }
+                        } else              // начало ввода с [-+*/] или число [-+*/]
+                            textInput.setText(strInput=Service.printNumber(dResult)+name);
 
                     else // func!=null
                         switch (strInput.substring(strInput.length() - 3)) {
                             case  " √ " -> {
                                 if (name.equals(" √ ")) {
-   //                                 figureSqrt++;
                                     textInput.setText(strInput = strInput + name);
                                 }else
-                                            //если два знака подряд + sqrt(*)  ->  на *
+                                    //если два знака подряд + sqrt(*)  ->  на *
                                     switch (strInput.substring(strInput.length() - 6,strInput.length() - 3)) {
                                         case " + ", " - ", " * ", " / " ->  //замена двух знаков одним
                                                 textInput.setText(strInput = strInput.substring(0, strInput.length() - 6) + name);
@@ -298,14 +345,10 @@ class CalculateFace extends JFrame  implements ActionListener {
                                     textInput.setText(strInput = strInput + name);
                                 else                              // замена +-/* на +-*/
                                     textInput.setText(strInput = strInput.substring(0, strInput.length() - 3) + name);
-
                             }
                             default ->         // для иных знаков
-                                textInput.setText(strInput = strInput + name);
-
-
+                                    textInput.setText(strInput = strInput + name);
                         }
-
 
                 else             //если после знака =, то знак стирается в строке ввода
                     switch (strInput.substring(strInput.length()-3)) {
@@ -337,12 +380,13 @@ class CalculateFace extends JFrame  implements ActionListener {
 
                     if (func == null) {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
-                                                                    dResultPercent, dNumber, dResult);
+                                dResultPercent, dNumber, dResult);
                         textInput.setText(Service.printNumber(dResult));
                     } else {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
-                                                                    dResultPercent, dNumber, dResult);
-                        textInput.setText(strInput = strInputFormerSign + Service.printNumber(dNumber));
+                                dResultPercent, dNumber, dResult);
+
+                        textInput.setText(strInput = strInputFormerSign + Service.printNumber(dResult-dResultPercent));
                     }
                     strResult="=" +Service.printNumber(dResult);
                     textRezult.setText( strResult);
@@ -360,124 +404,136 @@ class CalculateFace extends JFrame  implements ActionListener {
                     Service.unblockedAll(bPercent);       // работа % без ошибок
 
                     strNumber = "0";                      // если после = начнется ввод с "."
-
                     func= null;
                     strInput= "   ";                      // ввод числа после =
-
-  //                  nameSign=" ";
-
+                    //                  nameSign=" ";
                 }
             }
             nameSign = name;
             strInputFormerSign=strInput;
-        });
-        return b;
+        }
     }
 
-
     //creat Buttons for remember and delete
-    JButton createWorkButton(String name) {
-        b = new JButton(name);
+    JButton createWorkButton(Action bAction, String name, KeyStroke keyStroke) {
+        b = new JButton(bAction);
+        b.getInputMap  (JComponent.WHEN_IN_FOCUSED_WINDOW).put (keyStroke, name);
+        b.getActionMap().put(name,bAction);
+
         b.setBackground(bMColor);
         b.setFont(ButtonFontM);
         borderButton = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         b.setBorder(borderButton);
 
-        b.addActionListener((e) -> {
+        return b;
+    }
 
-                    switch (name) {
 
-                        case "M+" -> {
-                            memory=dResult;
-                            Service.unblockedAll(bMemoryHold);
-                        }
-                        case "M-" -> {
-                            memory=null;
-                            Service.blockedAll(bMemoryHold);
-                        }
-                        case "MR" -> {
-                            dNumber=memory;
-                                                   // вывод на экран ввода
-                            switch (strInput.substring(strInput.length() - 1)) {
+    class CreateWorkButton extends AbstractAction {
+        String name;
+
+        CreateWorkButton  (String nameButton) {
+            super(nameButton);
+            name = nameButton;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            switch (name) {
+
+                case "M+" -> {
+                    memory=dResult;
+                    Service.unblockedAll(bMemoryHold);
+                }
+                case "M-" -> {
+                    memory=null;
+                    Service.blockedAll(bMemoryHold);
+                }
+                case "MR" -> {
+                    dNumber=memory;
+                                                // вывод на экран ввода
+                    switch (strInput.substring(strInput.length() - 1)) {
                                                 // если до MR было число
-                                case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
-                                    boolean isFormerNumber=true;
+                        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
+                            boolean isFormerNumber=true;
 
-                                    while (isFormerNumber) {
-                                        strInput=strInput.substring(0, strInput.length() - 1);
+                            while (isFormerNumber) {
+                                strInput=strInput.substring(0, strInput.length() - 1);
 
-                                        switch (strInput.substring(strInput.length() - 1)) {
-                                            case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." ->
-                                                    isFormerNumber=true;
-                                            default ->
-                                                    isFormerNumber=false;
-                                        }
-                                    }
-                                    textInput.setText(strInput = strInput+Service.printNumber(memory));
+                                switch (strInput.substring(strInput.length() - 1)) {
+                                    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." ->
+                                        isFormerNumber=true;
+                                    default ->
+                                        isFormerNumber=false;
                                 }
-                                                // если до MR был знак
-                                default ->
-                                        textInput.setText(strInput = strInput+Service.printNumber(memory));
                             }
-                                                // деление на 0 исключить
-                            if ((dNumber == 0.0) && (nameSign.equals(" / "))) {
-                                strResult = "деление на 0 не возможно";
-                                Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
-                                        bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
-                                        bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
-                            } else {
-                                dResult= calculateCurrent.calculateInput(strInput);
-                                strResult = "=" + Service.printNumber(dResult);
-                            }
-
-                            textRezult.setText(strResult);           //запись на экран результата
-
-                            Service.unblockedAll(bPercent);       // работа % без ошибок
-
+                            textInput.setText(strInput = strInput+Service.printNumber(memory));
                         }
-                        case "AC" -> {
-                            Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint,
-                                    bMemoryAdd, bMemoryDel, bMemoryHold,  bDel,
-                                    bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
+                                            // если до MR был знак
+                        default ->
+                            textInput.setText(strInput = strInput+Service.printNumber(memory));
+                    }
+                                            // деление на 0 исключить
+                    if ((dNumber == 0.0) && (nameSign.equals(" / "))) {
+                        strResult = "деление на 0 не возможно";
+                        Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
+                            bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
+                            bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
+                    } else {
+                        dResult= calculateCurrent.calculateInput(strInput);
+                        strResult = "=" + Service.printNumber(dResult);
+                    }
 
-                            dNumber=0.0;
-                            strNumber="0";
+                    textRezult.setText(strResult);           //запись на экран результата
 
-                            textRezult.setText("0");
-                            textInput.setText(strInput=" ");
+                    Service.unblockedAll(bPercent);       // работа % без ошибок
 
-                            func=null;
-                            dResult=0.0;                // знак после АС
-                            strInput= "   ";            //цифра после АС
-                            strResult="0";              // AC затем =, textRez
-                            nameSign=" ";               //после sqrt
+                }
+                case "AC" -> {
+                    Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint,
+                        bMemoryAdd, bMemoryDel,  bDel,
+                        bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
+
+                    if (memory!=null)
+                        Service.unblockedAll(  bMemoryHold);
+
+                    dNumber=0.0;
+                    strNumber="0";
+
+                    textRezult.setText("0");
+                    textInput.setText(strInput=" ");
+
+                    func=null;
+                    dResult=0.0;                // знак после АС
+                    strInput= "   ";            //цифра после АС
+                    strResult="0";              // AC затем =, textRez
+                    nameSign=" ";               //после sqrt
+                }
+                case "C" -> {
+                                    // окно ввовда
+                    switch (strInput.charAt(strInput.length() - 1)) {
+                        case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
+                            textInput.setText(strInput = strInput.substring(0,strInput.length() - 1));
+                            dResult= calculateCurrent.calculateInput(strInput);
+                            if (strNumber.length()>1)
+                                strNumber=strNumber.substring(0,strNumber.length() - 1);
                         }
-                        case "C" -> {
-                                                    // окно ввовда
-                            switch (strInput.charAt(strInput.length() - 1)) {
-                                case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'-> {
-                                    textInput.setText(strInput = strInput.substring(0,strInput.length() - 1));
-                                    dResult= calculateCurrent.calculateInput(strInput);
-                                    if (strNumber.length()>1)
-                                        strNumber=strNumber.substring(0,strNumber.length() - 1);
-                                }
-                                default ->{
-                                    textInput.setText(strInput = strInput.substring(0, strInput.length() - 3));
-                                    dResult= calculateCurrent.calculateInput(strInput);
+                        default ->{
+                            textInput.setText(strInput = strInput.substring(0, strInput.length() - 3));
+                            dResult= calculateCurrent.calculateInput(strInput);
 
-                                }
-                            }
-                            strResult = "=" + Service.printNumber(dResult);
-                            textRezult.setText(strResult);
-
-                            Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,bPoint,
-                                    bMemoryAdd, bMemoryDel, bMemoryHold,  bDel,
-                                    bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical );
                         }
                     }
+                    strResult = "=" + Service.printNumber(dResult);
+                    textRezult.setText(strResult);
+
+                    Service.unblockedAll( b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,bPoint,
+                        bMemoryAdd, bMemoryDel, bMemoryHold,  bDel,
+                        bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical );
                 }
-        );
-        return b;
+            }
+        }
     }
 
 
@@ -676,6 +732,7 @@ class CalculateFace extends JFrame  implements ActionListener {
         jmiEngineer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
         var jmiIT = new JRadioButtonMenuItem("IT");
         jmiIT.setFont(MenuFont);
+        jmiIT.setMnemonic('I');
         jmiIT.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
         var bg = new ButtonGroup();
         bg.add(jmiCommon);

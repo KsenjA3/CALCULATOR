@@ -119,7 +119,7 @@ class CalculateCurrentInput {
             }
         }
 
-
+/*
         System.out.println("+Number ="+dNumber);
         System.out.println(func);
 
@@ -131,7 +131,7 @@ class CalculateCurrentInput {
 
         for (int i = 0; i<arrSign.size(); i++)
             System.out.println(i+" - "+ arrSign.get(i));
-
+*/
                             //calculate the resultate
         if (arrD.size()>0)
             dResult = arrD.get(0);
