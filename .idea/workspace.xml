@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="Keyboard">
+    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="CorrectTextInput">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CalculateCurrentInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateCurrentInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CalculateDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateDemo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculateFace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateFace.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,8 +86,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.CalculateDemo" />
-        <item itemvalue="Application.CalculateFace" />
         <item itemvalue="Application.Test" />
+        <item itemvalue="Application.CalculateFace" />
         <item itemvalue="Application.Test" />
         <item itemvalue="Application.CalculateDemo" />
       </list>
@@ -202,7 +200,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701119613713</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="CorrectTextInput">
+      <created>1701205858277</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1701205858277</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -227,29 +232,30 @@
     <MESSAGE value="PercentInCalcCurrent" />
     <MESSAGE value="overflowOFF" />
     <MESSAGE value="Keyboard" />
-    <option name="LAST_COMMIT_MESSAGE" value="Keyboard" />
+    <MESSAGE value="CorrectTextInput" />
+    <option name="LAST_COMMIT_MESSAGE" value="CorrectTextInput" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>203</line>
+          <line>192</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>161</line>
+          <line>150</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>270</line>
+          <line>259</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>433</line>
+          <line>422</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -292,35 +298,10 @@
           <line>54</line>
           <option name="timeStamp" value="43" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>153</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>154</line>
-          <option name="timeStamp" value="66" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>156</line>
-          <option name="timeStamp" value="68" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>157</line>
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>158</line>
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
           <line>78</line>
-          <properties class="CalculateFace" method="&lt;init&gt;">
+          <properties class="CalculateFace">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -329,20 +310,11 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Test.java</url>
           <line>14</line>
-          <properties class="Test" method="main">
+          <properties class="Test">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>155</line>
-          <properties class="CalculateFace.FocusKeyPanel" method="actionPerformed">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

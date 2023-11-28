@@ -128,11 +128,6 @@ class CalculateFace extends JFrame   {
         container.add(keyPanel);
             // container.add(Box.createGlue());
 
-
-
-
-
-
         // makeCard();
 
         jmb= new JMenuBar();
@@ -145,17 +140,11 @@ class CalculateFace extends JFrame   {
         pack();
 
         keyPanel.requestFocusInWindow();
+        ignoreLettersInput();
 
-        textInput.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "focusKeyPanel");
-        textInput.getActionMap().put("focusKeyPanel", new FocusKeyPanel());
 
-    }
 
-    class FocusKeyPanel extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            keyPanel.requestFocusInWindow();
-        }
+
     }
 
 
@@ -591,6 +580,74 @@ class CalculateFace extends JFrame   {
         textPanel.add(scrollinput );
         textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
     }
+
+    class FocusKeyPanel extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String str =textInput.getText();
+
+            System.out.println(str);
+
+            str= str.replace("+", " + ");
+            str= str.replace("-", " - ");
+            str= str.replace("/", " / ");
+            str= str.replace("*", " * ");
+
+
+            while (str.contains("  "))
+                str= str.replaceAll("  ", " ");
+
+
+            for (int i=0; i<str.length();i++) {
+                switch (str.charAt(i)) {
+                    case '+', '-', '/', '*'-> {
+                        switch (str.charAt(i+2)) {
+                            case '+', '-', '/', '*'-> str= str.substring(0,i) +str.substring(i+2);
+                        }
+                    }
+                }
+            }
+
+            textInput.setText(strInput=str);
+            System.out.println(str);
+
+            dResult= calculateCurrent.calculateInput(strInput);
+
+            strResult = "=" + Service.printNumber(dResult);
+            textRezult.setText(strResult);
+
+            keyPanel.requestFocusInWindow();
+        }
+    }
+
+
+    void ignoreLetter (char ... var){
+         for (char c: var) {
+            textInput.getInputMap().put(KeyStroke.getKeyStroke(c), "none");
+    }
+
+}
+    void ignoreLettersInput() {
+        var  KeyInputAction = new FocusKeyPanel();
+        textInput.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "focusKeyPanel");
+        textInput.getActionMap().put("focusKeyPanel",KeyInputAction );
+
+        textInput.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 0), "correctInput");
+        textInput.getActionMap().put("correctInput",KeyInputAction );
+
+
+
+
+        ignoreLetter(
+            'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',
+                 'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M',
+                '<','>','?','!','@','#','$','%','^','&','(',')',':',';','"',',','[',']','{','}','`','~',
+        'ё','й','ц','у','к','е','н','г','ш','щ','з','х','ъ','ф','ы','в','а','п','р','о','л','д','ж','э','я','ч','с','м','и','т','ь','б','ю',
+        'Ё','Й','Ц','У','К','Е','Н','Г','Ш','Щ','З','Х','Ъ','Ф','Ы','В','А','П','Р','О','Л','Д','Ж','Э','Я','Ч','С','М','И','Т','Ь','Б','Ю'
+        );
+    }
+
+
 
     // создание простого калькулятора
     void makeCommonCalculate() {
