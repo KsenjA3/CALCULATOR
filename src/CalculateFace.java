@@ -1,18 +1,14 @@
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.*;
-import java.io.*;
 
 
-class CalculateFace extends JFrame  implements ActionListener {
+class CalculateFace extends JFrame   {
 
     //размеры окон калькулятора
     int widthSize, widthSizeMain, heightSizeMain, heightSizeText, heightSizeKey;
@@ -112,6 +108,7 @@ class CalculateFace extends JFrame  implements ActionListener {
         gbc = new GridBagConstraints();
 
                         //создание корневой панели
+
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         add(Box.createVerticalGlue());
@@ -131,6 +128,11 @@ class CalculateFace extends JFrame  implements ActionListener {
         container.add(keyPanel);
             // container.add(Box.createGlue());
 
+
+
+
+
+
         // makeCard();
 
         jmb= new JMenuBar();
@@ -141,8 +143,20 @@ class CalculateFace extends JFrame  implements ActionListener {
         setJMenuBar(jmb);
 
         pack();
+
+        keyPanel.requestFocusInWindow();
+
+        textInput.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "focusKeyPanel");
+        textInput.getActionMap().put("focusKeyPanel", new FocusKeyPanel());
+
     }
 
+    class FocusKeyPanel extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            keyPanel.requestFocusInWindow();
+        }
+    }
 
 
     //create calculation Buttons all types
@@ -260,7 +274,7 @@ class CalculateFace extends JFrame  implements ActionListener {
         b.getInputMap  (JComponent.WHEN_IN_FOCUSED_WINDOW).put (keyStroke, name);
         b.getActionMap().put(name,bAction);
 
-        if (name ==" = ") {
+        if (name.equals(" = ")) {
             b.getInputMap  (JComponent.WHEN_IN_FOCUSED_WINDOW).put (KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0), "name=");
             b.getActionMap().put("name=",bAction);
         }
@@ -386,7 +400,9 @@ class CalculateFace extends JFrame  implements ActionListener {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
                                 dResultPercent, dNumber, dResult);
 
-                        textInput.setText(strInput = strInputFormerSign + Service.printNumber(dResult-dResultPercent));
+                        textInput.setText(strInput = strInputFormerSign + Service.printNumber(
+                                calculateCurrent.calculateInput(Service.printNumber(dResult)+
+                                        " - "+Service.printNumber(dResultPercent))));
                     }
                     strResult="=" +Service.printNumber(dResult);
                     textRezult.setText( strResult);
@@ -563,8 +579,6 @@ class CalculateFace extends JFrame  implements ActionListener {
         scrollinput.setPreferredSize(new Dimension(widthSize,SIZE_TEXT_INPUT));
         scrollinput.setBorder(null);
 
-
-
         textRezult = new JLabel("0");
         textRezult.setFont(ResultFont);
         JPanel labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -572,14 +586,10 @@ class CalculateFace extends JFrame  implements ActionListener {
         labPanel.setPreferredSize(new Dimension(widthSize, SIZE_TEXT_RESULT));
         labPanel.add(textRezult);
 
-
-
         textLog= new JLabel(" ", JLabel.RIGHT);
 
         textPanel.add(scrollinput );
         textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
-
-
     }
 
     // создание простого калькулятора
@@ -762,10 +772,6 @@ class CalculateFace extends JFrame  implements ActionListener {
         jmb.add(jmView);
     }
 
-    void makeActions() {
-
-
-    }
 
     void makeCorrectMenu() {
         JMenu jmCorrect = new JMenu("Правка");
@@ -781,15 +787,27 @@ class CalculateFace extends JFrame  implements ActionListener {
 
     }
 
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
     // установить размеры окна
     public Dimension getPreferredSize() {
         return new Dimension(widthSizeMain, heightSizeMain);
+    }
+
+    private static void createAndShowGUI () {
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        var frame = new CalculateFace();
+        frame.setTitle("КАЛЬКУЛЯТОР");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                createAndShowGUI();
+            }
+        });
     }
 
 }

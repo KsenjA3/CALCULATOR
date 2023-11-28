@@ -166,7 +166,7 @@ class CalculateCurrentInput {
                 case " + ", " - " -> dNumber = Operations.divide(
                                                         Operations.multiply(dResultPercent,dNumber),
                                                         new BigDecimal(100));
-     //                   dResultPercent * dNumber / 100.0;
+
                 case " * ", " / " -> dNumber = Operations.divide(dResult, new BigDecimal(100));
             }
             dResult = Operations.result(func, dResultPercent, dNumber);
