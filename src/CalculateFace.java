@@ -1,7 +1,6 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -10,12 +9,11 @@ import javax.swing.text.*;
 
 class CalculateFace extends JFrame   {
 
-    //размеры окон калькулятора
-    int widthSize, widthSizeMain, heightSizeMain, heightSizeText, heightSizeKey;
-
     // меню
     JMenuBar jmb;
     JPopupMenu jpu;
+
+    JFrame frame;
 
     //панели, колода карт
     CardLayout cardTypeCalc;
@@ -23,23 +21,16 @@ class CalculateFace extends JFrame   {
     JPanel textPanel, keyPanel, container;
 
     //ОКНО ВЫВОДА
-    JLabel textRezult, textLog;                     //текстовые области вывода
-    JScrollPane scrollinput;
-    JTextPane textInput;
+    JLabel textRezult;                     //текстовые области вывода
+    JScrollPane scrollinput, scrollLog;
+    JTextPane textInput, textLog;
 
-    ArrayList <JTextPane> arrLog;                   // для журнала
 
                         //ОКНО ВВОДА
                                                 //button simple calculation
     JButton b, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint;
     JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
     JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
-/*
-    Action b1Action, b2Action, b3Action, b4Action, b5Action, b6Action, b7Action, b8Action, b9Action, b0Action, bPointAction;
-    Action bPlusAction, bMinusAction, bDivideAction, bMultiplyAction, bPercentAction,  bResultAction, bRadicalAction;
-    Action bMemoryAddAction, bMemoryDelAction, bMemoryHoldAction, bClearAction, bDelAction;
-*/
-
 
     private int N;                                  // restriction amount  input figures to number
 
@@ -57,6 +48,8 @@ class CalculateFace extends JFrame   {
     private Double memory;
     private CalculateCurrentInput calculateCurrent;
 
+    private StringBuffer sbLog;
+
 
                         // ВИД
     GridBagLayout gbag;
@@ -68,13 +61,23 @@ class CalculateFace extends JFrame   {
     Font ButtonFont, ButtonFontM,  MenuFont, InputFont, ResultFont, LogFont;
     SimpleAttributeSet textInputAttributes;         //для JTextPane
     static final String FRONT_NAME_TEXT_INPUT = "Arial";
+    static final String FRONT_NAME_TEXT_LOG = "Arial";
+    static final int FRONT_TEXT_LOG = 18;
     static final int FRONT_TEXT_INPUT = 24 ;
     static final int FRONT_TEXT_RESULT = 20 ;
-                            //размеры текстовых областей
+
+    //measure windows calculators
+    int   widthSizeText, heightSizeMain, heightSizeText;
+                            //height text windows
     static final int SIZE_TEXT_RESULT = 28;
     static final int SIZE_TEXT_INPUT = 103;
-
-
+    static final int SIZE_TEXT_LOG= 192;
+                            //height Keys Window
+    static final int HIEGHT_SIZE_KEY = 260;
+                            //width windows calculators
+    static final int WIDTH_SIZE_SIMPLE = 260+20;
+    static final int WIDTH_SIZE_ENGINEER = 600;
+    static final int WIDTH_SIZE_IT = 150;
 
     CalculateFace() {
 
@@ -85,6 +88,7 @@ class CalculateFace extends JFrame   {
          strInput ="   ";
          strResult=" ";
          func=null;
+         sbLog = new StringBuffer();
 
          nameSign="";                 // % и деление на 0, ввод числа после %
          strInputFormerSign="";             //for % because number changed after %
@@ -101,23 +105,40 @@ class CalculateFace extends JFrame   {
         MenuFont =new Font("Arial", Font.PLAIN, 15);
         InputFont=new Font("Arial", Font.PLAIN, FRONT_TEXT_INPUT);
         ResultFont= new Font("Arial", Font.PLAIN, FRONT_TEXT_RESULT);
-        LogFont =new Font("Arial", Font.PLAIN, 15);
+        LogFont =new Font("Arial", Font.PLAIN, 18);
 
                         //для сеточно-контейнерной компановки keyPanel и textPanel
         gbag = new GridBagLayout();
         gbc = new GridBagConstraints();
 
                         //создание корневой панели
-
+/*
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         add(Box.createVerticalGlue());
         setContentPane(container);
+*/
+
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        frame = new JFrame();
+        frame.setTitle("КАЛЬКУЛЯТОР");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
         calculateCurrent = new CalculateCurrentInput ();
 
         makeButtons();                      //buttons calculator
 
+         makeCard();
+
+        jmb= new JMenuBar();
+            makeViewMenu();                     // меню Вид
+            makeCorrectMenu();                  //меню Правка
+            makebriefMenu();                    //меню Справка
+            makePopupMenu();                    // всплывающее меню
+        frame.setJMenuBar(jmb);
+
+ /*
         makeCommonCalculate();              //types calculator
         makeEngineerCalculate();            //after buttons because buttons on screen
         makeITCalculate();
@@ -127,24 +148,14 @@ class CalculateFace extends JFrame   {
         container.add(textPanel);
         container.add(keyPanel);
             // container.add(Box.createGlue());
+*/
 
-        // makeCard();
-
-        jmb= new JMenuBar();
-        makeViewMenu();                     // меню Вид
-        makeCorrectMenu();                  //меню Правка
-        makebriefMenu();                    //меню Справка
-        makePopupMenu();                    // всплывающее меню
-        setJMenuBar(jmb);
-
-        pack();
+        frame.pack();
 
         keyPanel.requestFocusInWindow();
         ignoreLettersInput();
 
-
-
-
+        frame.setVisible(true);
     }
 
 
@@ -406,6 +417,9 @@ class CalculateFace extends JFrame   {
                     textInput.setParagraphAttributes(textInputAttributes, true);
                     textInput.setText(strInput);
 
+                    sbLog.append(strInput).append("\n").append(strResult).append("\n");
+                    textLog.setText(sbLog.toString());
+
                     Service.unblockedAll(bPercent);       // работа % без ошибок
 
                     strNumber = "0";                      // если после = начнется ввод с "."
@@ -416,6 +430,8 @@ class CalculateFace extends JFrame   {
             }
             nameSign = name;
             strInputFormerSign=strInput;
+
+
         }
     }
 
@@ -541,46 +557,6 @@ class CalculateFace extends JFrame   {
         }
     }
 
-
-    //создание  экрана  ввода-вывода
-    void makeTextPanel() {
-
-        textPanel = new JPanel();
-        textPanel.setBackground(paneColor);
-        textPanel.setLayout(gbag);
-        // textPanel.setPreferredSize(new Dimension(WidthSize,HeightSizeText)); автоматически
-        borderText = BorderFactory.createLineBorder(Color.BLACK, 2);
-        textPanel.setBorder(borderText);
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        add(Box.createVerticalGlue());
-
-        textInput = new JTextPane();
-        textInput.setBackground(paneColor);
-        textInputAttributes =  new SimpleAttributeSet();
-        StyleConstants.setAlignment(textInputAttributes, StyleConstants.ALIGN_RIGHT);
-        StyleConstants.setFontFamily(textInputAttributes,FRONT_NAME_TEXT_INPUT);
-        StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
-        // StyleConstants.setBackground(textInputAttributes, PaneColor); не установился
-        textInput.setParagraphAttributes(textInputAttributes, true);
-        scrollinput= new JScrollPane(textInput,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollinput.setPreferredSize(new Dimension(widthSize,SIZE_TEXT_INPUT));
-        scrollinput.setBorder(null);
-
-        textRezult = new JLabel("0");
-        textRezult.setFont(ResultFont);
-        JPanel labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        labPanel.setBackground(bColor);
-        labPanel.setPreferredSize(new Dimension(widthSize, SIZE_TEXT_RESULT));
-        labPanel.add(textRezult);
-
-        textLog= new JLabel(" ", JLabel.RIGHT);
-
-        textPanel.add(scrollinput );
-        textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
-    }
-
     class FocusKeyPanel extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -635,9 +611,6 @@ class CalculateFace extends JFrame   {
         textInput.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 0), "correctInput");
         textInput.getActionMap().put("correctInput",KeyInputAction );
 
-
-
-
         ignoreLetter(
             'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',
                  'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M',
@@ -649,18 +622,74 @@ class CalculateFace extends JFrame   {
 
 
 
+    //создание  экрана  ввода-вывода
+    void makeTextPanel() {
+
+        textPanel = new JPanel();
+            textPanel.setBackground(paneColor);
+            textPanel.setLayout(gbag);
+        // textPanel.setPreferredSize(new Dimension(WidthSize,HeightSizeText)); автоматически
+        borderText = BorderFactory.createLineBorder(Color.BLACK, 2);
+            textPanel.setBorder(borderText);
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        add(Box.createVerticalGlue());
+
+        textInput = new JTextPane();
+            textInput.setBackground(paneColor);
+            textInputAttributes =  new SimpleAttributeSet();
+                StyleConstants.setAlignment(textInputAttributes, StyleConstants.ALIGN_RIGHT);
+                StyleConstants.setFontFamily(textInputAttributes,FRONT_NAME_TEXT_INPUT);
+                StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_INPUT);
+            textInput.setParagraphAttributes(textInputAttributes, true);
+        scrollinput= new JScrollPane(textInput,
+                                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+            scrollinput.setBorder(null);
+
+        textRezult = new JLabel("0");
+            textRezult.setFont(ResultFont);
+        JPanel labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+            labPanel.setBackground(bColor);
+            labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+        labPanel.add(textRezult);
+
+        textLog= new JTextPane();
+            textLog.setBackground(bColor);
+            var  textLogAttributes =  new SimpleAttributeSet();
+                StyleConstants.setAlignment(textLogAttributes, StyleConstants.ALIGN_RIGHT);
+                StyleConstants.setFontFamily(textLogAttributes,FRONT_NAME_TEXT_LOG);
+                StyleConstants.setFontSize(textLogAttributes,FRONT_TEXT_LOG);
+                StyleConstants.setForeground(textLogAttributes, Color.GRAY);
+            textLog.setParagraphAttributes(textLogAttributes, true);
+        scrollLog= new JScrollPane(textLog,
+                                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
+            scrollLog.setBorder(null);
+
+
+        textPanel.add(scrollLog);
+        textPanel.add(scrollinput );
+        textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
+    }
+
+
+
+
+
     // создание простого калькулятора
     void makeCommonCalculate() {
         // размеры всех окон
-        widthSize = 260;
-        heightSizeKey = 260;
-        heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
-        heightSizeMain = heightSizeText+heightSizeKey;
-        widthSizeMain=widthSize+20;
+
+ //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
+        heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
+        heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
+
         // создание keyPanel
         keyPanel = new JPanel();
         keyPanel.setBackground(paneColor);
-        keyPanel.setPreferredSize (new Dimension(widthSize,heightSizeKey));
+        keyPanel.setPreferredSize (new Dimension(WIDTH_SIZE_SIMPLE,HIEGHT_SIZE_KEY));
 
 
         // сеточно-контейнерная компоновка keyPanel
@@ -759,29 +788,81 @@ class CalculateFace extends JFrame   {
     }
 
     void makeEngineerCalculate() {
+        widthSizeText = WIDTH_SIZE_ENGINEER;
+
+        //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
+        heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
+        heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
+
+        // создание keyPanel
+        keyPanel = new JPanel();
+        keyPanel.setBackground(paneColor);
+        keyPanel.setPreferredSize (new Dimension(WIDTH_SIZE_ENGINEER,HIEGHT_SIZE_KEY));
 
     }
 
     void makeITCalculate() {
+        widthSizeText = WIDTH_SIZE_IT;
+
+        //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
+        heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
+        heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
+
+        // создание keyPanel
+        keyPanel = new JPanel();
+        keyPanel.setBackground(paneColor);
+        keyPanel.setPreferredSize (new Dimension(WIDTH_SIZE_IT,HIEGHT_SIZE_KEY));
 
     }
 
     //создание колоды карт
     void makeCard() {
+
         cardTypeCalc = new CardLayout();            //компоновка
         cardPanel = new JPanel();                   //колода
         cardPanel.setLayout(cardTypeCalc);          //компоновка колоды
 
         //карты в колоде
         commonPanel = new JPanel();
-        engineerPanel = new JPanel();
-        itPanel = new JPanel();
-        //формирование колоды
-        cardPanel.add(commonPanel, "Обычный");
-        cardPanel.add(engineerPanel, "Инженерный");
-        cardPanel.add(itPanel, "IT");
+                commonPanel.setLayout(new BoxLayout(commonPanel, BoxLayout.Y_AXIS));
+                add(Box.createVerticalGlue());
+                setContentPane(commonPanel);
+            makeCommonCalculate();
+            widthSizeText=WIDTH_SIZE_SIMPLE;
+            makeTextPanel();
+        commonPanel.add(textPanel);
+        commonPanel.add(keyPanel);
 
-        add(cardPanel);                         //ввод колоды в главный фрейм
+
+        engineerPanel = new JPanel();
+                engineerPanel.setLayout(new BoxLayout(engineerPanel, BoxLayout.Y_AXIS));
+                add(Box.createVerticalGlue());
+                setContentPane(engineerPanel);
+            makeEngineerCalculate();
+            widthSizeText=WIDTH_SIZE_ENGINEER;
+            makeTextPanel();
+        engineerPanel.add(textPanel);
+        engineerPanel.add(keyPanel);
+
+
+
+        itPanel = new JPanel();
+                itPanel.setLayout(new BoxLayout(itPanel, BoxLayout.Y_AXIS));
+                add(Box.createVerticalGlue());
+                setContentPane(itPanel);
+            makeITCalculate();
+            widthSizeText=WIDTH_SIZE_IT;
+            makeTextPanel();
+        itPanel.add(textPanel);
+        itPanel.add(keyPanel);
+
+
+        //формирование колоды
+        cardPanel.add(commonPanel, "Simple");
+        cardPanel.add(engineerPanel, "Engineer");
+        cardPanel.add(itPanel, "ITcalc");
+
+        frame.add(cardPanel);                         //ввод колоды в главный фрейм
     }
 
 
@@ -789,29 +870,29 @@ class CalculateFace extends JFrame   {
     // с мнемониками и оперативными клавишами и всплывающими подсказками
     void makeViewMenu() {
         JMenu jmView = new JMenu("Вид");
-        jmView.setFont(MenuFont);
+            jmView.setFont(MenuFont);
 
         var jmiCommon = new JRadioButtonMenuItem("Обычный");
-        jmiCommon.setFont(MenuFont);
-        jmiCommon.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
+            jmiCommon.setFont(MenuFont);
+            jmiCommon.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
         var jmiEngineer = new JRadioButtonMenuItem("Инженерный");
-        jmiEngineer.setFont(MenuFont);
-        jmiEngineer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
+            jmiEngineer.setFont(MenuFont);
+            jmiEngineer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
         var jmiIT = new JRadioButtonMenuItem("IT");
-        jmiIT.setFont(MenuFont);
-        jmiIT.setMnemonic('I');
-        jmiIT.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
+            jmiIT.setFont(MenuFont);
+            jmiIT.setMnemonic('I');
+            jmiIT.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
         var bg = new ButtonGroup();
-        bg.add(jmiCommon);
-        bg.add(jmiEngineer);
-        bg.add(jmiIT);
+            bg.add(jmiCommon);
+            bg.add(jmiEngineer);
+            bg.add(jmiIT);
 
         var jchbLog = new JCheckBoxMenuItem("Журнал");
-        jchbLog.setFont(MenuFont);
-        jchbLog.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_DOWN_MASK));
+            jchbLog.setFont(MenuFont);
+            jchbLog.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_DOWN_MASK));
         var jchbGroupDigit = new JCheckBoxMenuItem("Числовые разряды");
-        jchbGroupDigit.setFont(MenuFont);
-        jchbGroupDigit.setToolTipText("Группировка цифр по разрядам");
+            jchbGroupDigit.setFont(MenuFont);
+            jchbGroupDigit.setToolTipText("Группировка цифр по разрядам");
 
         jmView.add(jmiCommon);
         jmView.add(jmiEngineer);
@@ -820,13 +901,26 @@ class CalculateFace extends JFrame   {
         jmView.add(jchbLog);
         jmView.add(jchbGroupDigit);
 
-        //  jmiCommon.addActionListener((ae)->cardTypeCalc.show(cardPanel,"Обычный"));
-        //  jmiEngineer.addActionListener((ae)->cardTypeCalc.show(cardPanel,"Инженерный"));
-        //  jmiIT.addActionListener((ae)->cardTypeCalc.show(cardPanel,"IT"));
+        jmb.add(jmView);
+
+        jmiCommon.addActionListener((ae)->{
+            cardTypeCalc.show(cardPanel,"Simple");
+            frame.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, heightSizeMain));
+            frame.pack();
+        });
+        jmiEngineer.addActionListener((ae)->{
+            cardTypeCalc.show(cardPanel,"Engineer");
+            frame.setPreferredSize(new Dimension(WIDTH_SIZE_ENGINEER, heightSizeMain));
+            frame.pack();
+        });
+        jmiIT.addActionListener((ae)->{
+            cardTypeCalc.show(cardPanel,"ITcalc");
+            frame.setPreferredSize(new Dimension(WIDTH_SIZE_IT, heightSizeMain));
+            frame.pack();
+        });
         //       jchbLog.addActionListener(this);
         //       jchbGroupDigit.addActionListener(this);
 
-        jmb.add(jmView);
     }
 
 
@@ -845,24 +939,13 @@ class CalculateFace extends JFrame   {
     }
 
     // установить размеры окна
-    public Dimension getPreferredSize() {
-        return new Dimension(widthSizeMain, heightSizeMain);
-    }
-
-    private static void createAndShowGUI () {
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        var frame = new CalculateFace();
-        frame.setTitle("КАЛЬКУЛЯТОР");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.setVisible(true);
-    }
+  //  public Dimension getPreferredSize() { return new Dimension(widthSizeMain, heightSizeMain); }
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                createAndShowGUI();
+                new CalculateFace();
             }
         });
     }
