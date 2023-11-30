@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="LogPanel">
+    <list default="true" id="795f0c55-bc32-4778-8cc5-3aedf9c90774" name="Changes" comment="Cards1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CalculateDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateDemo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculateFace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculateFace.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +27,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="91df85e4c1f5d1814639cd8be8eb00f6098043eb" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,7 +61,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.CalculateDemo">
+  <component name="RunManager" selected="Application.CalculateFace">
     <configuration name="CalculateDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CalculateDemo" />
       <module name="CALCULATION" />
@@ -87,11 +85,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CalculateDemo" />
-        <item itemvalue="Application.Test" />
         <item itemvalue="Application.CalculateFace" />
+        <item itemvalue="Application.CalculateDemo" />
         <item itemvalue="Application.Test" />
         <item itemvalue="Application.CalculateDemo" />
+        <item itemvalue="Application.Test" />
       </list>
     </recent_temporary>
   </component>
@@ -223,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701207675393</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Cards1">
+      <created>1701332366455</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1701332366455</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -250,7 +255,8 @@
     <MESSAGE value="Keyboard" />
     <MESSAGE value="CorrectTextInput" />
     <MESSAGE value="LogPanel" />
-    <option name="LAST_COMMIT_MESSAGE" value="LogPanel" />
+    <MESSAGE value="Cards1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cards1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -297,42 +303,52 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>684</line>
+          <line>677</line>
           <option name="timeStamp" value="74" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>685</line>
+          <line>678</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>671</line>
+          <line>664</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>672</line>
+          <line>665</line>
           <option name="timeStamp" value="77" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>673</line>
+          <line>666</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>90</line>
+          <line>91</line>
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>630</line>
+          <line>622</line>
           <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
+          <line>586</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
+          <line>682</line>
+          <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
           <url>file://$PROJECT_DIR$/src/CalculateFace.java</url>
-          <line>39</line>
+          <line>22</line>
           <properties field="strInput" class="CalculateFace" />
           <option name="timeStamp" value="80" />
         </line-breakpoint>

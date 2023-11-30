@@ -9,23 +9,6 @@ import javax.swing.text.*;
 
 class CalculateFace extends JFrame   {
 
-    // меню
-    JMenuBar jmb;
-    JPopupMenu jpu;
-
-    JFrame frame;
-
-    //панели, колода карт
-    CardLayout cardTypeCalc;
-    JPanel cardPanel, commonPanel, engineerPanel, itPanel;
-    JPanel textPanel, keyPanel, container;
-
-    //ОКНО ВЫВОДА
-    JLabel textRezult;                     //текстовые области вывода
-    JScrollPane scrollinput, scrollLog;
-    JTextPane textInput, textLog;
-
-
                         //ОКНО ВВОДА
                                                 //button simple calculation
     JButton b, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint;
@@ -57,6 +40,23 @@ class CalculateFace extends JFrame   {
     Color paneColor, bColor, signColor, bMColor;    //used colors
     Border borderButton, borderText;                //borders used by elements
 
+    // меню
+    JMenuBar jmb;
+    JPopupMenu jpu;
+
+    //панели, колода карт
+    JFrame frame;
+    CardLayout cardTypeCalc;
+    JPanel container;
+    JPanel cardPanel, commonPanel, engineerPanel, itPanel;
+    JPanel  keyPanelSimple, keyPanelEngineer, keyPanelIT;
+    JPanel textPanel, labPanel;
+
+    //ОКНО ВЫВОДА
+    JLabel textRezult;                     //текстовые области вывода
+    JScrollPane scrollinput, scrollLog;
+    JTextPane textInput, textLog;
+
                             //используемые шрифты
     Font ButtonFont, ButtonFontM,  MenuFont, InputFont, ResultFont, LogFont;
     SimpleAttributeSet textInputAttributes;         //для JTextPane
@@ -67,7 +67,8 @@ class CalculateFace extends JFrame   {
     static final int FRONT_TEXT_RESULT = 20 ;
 
     //measure windows calculators
-    int   widthSizeText, heightSizeMain, heightSizeText;
+    int    heightSizeMain, heightSizeText;
+    int widthSizeText;
                             //height text windows
     static final int SIZE_TEXT_RESULT = 28;
     static final int SIZE_TEXT_INPUT = 103;
@@ -110,26 +111,28 @@ class CalculateFace extends JFrame   {
                         //для сеточно-контейнерной компановки keyPanel и textPanel
         gbag = new GridBagLayout();
         gbc = new GridBagConstraints();
+                        //для расчетов
+        calculateCurrent = new CalculateCurrentInput ();
 
-                        //создание корневой панели
-/*
-        container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        add(Box.createVerticalGlue());
-        setContentPane(container);
-*/
-
+                        //create frame
         JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame();
-        frame.setTitle("КАЛЬКУЛЯТОР");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setTitle("КАЛЬКУЛЯТОР");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-        calculateCurrent = new CalculateCurrentInput ();
+                        //создание корневой панели
+        container = new JPanel();
+            container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        frame.add(Box.createVerticalGlue());
+        frame.setContentPane(container);
 
         makeButtons();                      //buttons calculator
 
-         makeCard();
+        makeCard();
+        makeTextPanel();                     //input panel
+            ignoreLettersInput();
+        container.add(textPanel);
+        container.add(cardPanel);
 
         jmb= new JMenuBar();
             makeViewMenu();                     // меню Вид
@@ -138,22 +141,15 @@ class CalculateFace extends JFrame   {
             makePopupMenu();                    // всплывающее меню
         frame.setJMenuBar(jmb);
 
- /*
-        makeCommonCalculate();              //types calculator
-        makeEngineerCalculate();            //after buttons because buttons on screen
-        makeITCalculate();
-
-        makeTextPanel();                     //input panel
-
-        container.add(textPanel);
-        container.add(keyPanel);
-            // container.add(Box.createGlue());
-*/
+        widthSizeText=WIDTH_SIZE_SIMPLE;
+            scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+            labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+            scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
+        frame.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, heightSizeMain));
+        cardTypeCalc.show(cardPanel,"Simple");
 
         frame.pack();
-
-        keyPanel.requestFocusInWindow();
-        ignoreLettersInput();
+            keyPanelSimple.requestFocusInWindow();
 
         frame.setVisible(true);
     }
@@ -562,17 +558,13 @@ class CalculateFace extends JFrame   {
         public void actionPerformed(ActionEvent e) {
             String str =textInput.getText();
 
-            System.out.println(str);
-
             str= str.replace("+", " + ");
             str= str.replace("-", " - ");
             str= str.replace("/", " / ");
             str= str.replace("*", " * ");
 
-
             while (str.contains("  "))
                 str= str.replaceAll("  ", " ");
-
 
             for (int i=0; i<str.length();i++) {
                 switch (str.charAt(i)) {
@@ -592,7 +584,7 @@ class CalculateFace extends JFrame   {
             strResult = "=" + Service.printNumber(dResult);
             textRezult.setText(strResult);
 
-            keyPanel.requestFocusInWindow();
+            keyPanelSimple.requestFocusInWindow();
         }
     }
 
@@ -644,14 +636,14 @@ class CalculateFace extends JFrame   {
         scrollinput= new JScrollPane(textInput,
                                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+       //     scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
             scrollinput.setBorder(null);
 
         textRezult = new JLabel("0");
             textRezult.setFont(ResultFont);
-        JPanel labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+            labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
             labPanel.setBackground(bColor);
-            labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+     //       labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
         labPanel.add(textRezult);
 
         textLog= new JTextPane();
@@ -665,8 +657,9 @@ class CalculateFace extends JFrame   {
         scrollLog= new JScrollPane(textLog,
                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
+   //         scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
             scrollLog.setBorder(null);
+
 
 
         textPanel.add(scrollLog);
@@ -686,14 +679,14 @@ class CalculateFace extends JFrame   {
         heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
         heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
 
-        // создание keyPanel
-        keyPanel = new JPanel();
-        keyPanel.setBackground(paneColor);
-        keyPanel.setPreferredSize (new Dimension(WIDTH_SIZE_SIMPLE,HIEGHT_SIZE_KEY));
+                        // создание keyPanel
+        keyPanelSimple = new JPanel();
+            keyPanelSimple.setBackground(paneColor);
+            keyPanelSimple.setPreferredSize (new Dimension(WIDTH_SIZE_SIMPLE,HIEGHT_SIZE_KEY));
 
 
-        // сеточно-контейнерная компоновка keyPanel
-        keyPanel.setLayout(gbag);
+                        // сеточно-контейнерная компоновка keyPanel
+        keyPanelSimple.setLayout(gbag);
         gbc.fill = GridBagConstraints.CENTER;
         gbc.weightx = 100;
         gbc.weighty = 100;
@@ -703,68 +696,68 @@ class CalculateFace extends JFrame   {
         gbc.ipadx = 10;
         gbc.gridy = 0;
         gbc.gridx = 0;
-        keyPanel.add(bClear, gbc);
+        keyPanelSimple.add(bClear, gbc);
         gbc.ipadx = 29;
         gbc.gridx = 1;
-        keyPanel.add(bDel, gbc);
+        keyPanelSimple.add(bDel, gbc);
         gbc.ipadx = 1;
         gbc.gridx = 2;
-        keyPanel.add(bMemoryHold, gbc);
+        keyPanelSimple.add(bMemoryHold, gbc);
         gbc.ipadx = 4;
         gbc.gridx = 3;
-        keyPanel.add(bMemoryAdd, gbc);
+        keyPanelSimple.add(bMemoryAdd, gbc);
         gbc.ipadx = 11;
         gbc.gridx = 4;
-        keyPanel.add(bMemoryDel, gbc);
+        keyPanelSimple.add(bMemoryDel, gbc);
 
         gbc.ipady = 0;
         gbc.ipadx = 20;
         gbc.gridy = 1;
         gbc.gridx = 0;
-        keyPanel.add(b7, gbc);
+        keyPanelSimple.add(b7, gbc);
         gbc.gridx = 1;
-        keyPanel.add(b8, gbc);
+        keyPanelSimple.add(b8, gbc);
         gbc.gridx = 2;
-        keyPanel.add(b9, gbc);
+        keyPanelSimple.add(b9, gbc);
         gbc.ipadx = 8;
         gbc.gridx = 3;
-        keyPanel.add(bDivide, gbc);
+        keyPanelSimple.add(bDivide, gbc);
         gbc.ipadx = 0;
         gbc.gridx = 4;
-        keyPanel.add(bPercent, gbc);
+        keyPanelSimple.add(bPercent, gbc);
 
         gbc.ipadx = 20;
         gbc.gridy = 2;
         gbc.gridx = 0;
-        keyPanel.add(b4, gbc);
+        keyPanelSimple.add(b4, gbc);
         gbc.gridx = 1;
-        keyPanel.add(b5, gbc);
+        keyPanelSimple.add(b5, gbc);
         gbc.gridx = 2;
-        keyPanel.add(b6, gbc);
+        keyPanelSimple.add(b6, gbc);
         gbc.ipadx = 6;
         gbc.gridx = 3;
-        keyPanel.add(bMultiply, gbc);
+        keyPanelSimple.add(bMultiply, gbc);
         gbc.gridx = 4;
         gbc.ipadx = 8;
-        keyPanel.add(bRadical, gbc);
+        keyPanelSimple.add(bRadical, gbc);
 
         gbc.ipadx = 20;
         gbc.gridy = 3;
         gbc.gridx = 0;
-        keyPanel.add(b1, gbc);
+        keyPanelSimple.add(b1, gbc);
         gbc.gridx = 1;
-        keyPanel.add(b2, gbc);
+        keyPanelSimple.add(b2, gbc);
         gbc.gridx = 2;
-        keyPanel.add(b3, gbc);
+        keyPanelSimple.add(b3, gbc);
         gbc.ipadx = 6;
         gbc.gridx = 3;
-        keyPanel.add(bPlus, gbc);
+        keyPanelSimple.add(bPlus, gbc);
 
         gbc.ipadx = 6;
         gbc.ipady = 53;
         gbc.gridx = 4;
         gbc.gridheight = 2;
-        keyPanel.add(bResult, gbc);
+        keyPanelSimple.add(bResult, gbc);
 
         gbc.ipadx = 71;
         gbc.ipady = 0;
@@ -772,46 +765,42 @@ class CalculateFace extends JFrame   {
         gbc.gridwidth = 2;
         gbc.gridy = 4;
         gbc.gridx = 0;
-        keyPanel.add(b0, gbc);
+        keyPanelSimple.add(b0, gbc);
 
         gbc.ipadx = 30;
         gbc.gridwidth = 1;
         gbc.gridx = 2;
-        keyPanel.add(bPoint, gbc);
+        keyPanelSimple.add(bPoint, gbc);
 
         gbc.ipadx = 16;
         gbc.ipady = 0;
         gbc.gridx = 3;
-        keyPanel.add(bMinus, gbc);
+        keyPanelSimple.add(bMinus, gbc);
 
 
     }
 
     void makeEngineerCalculate() {
-        widthSizeText = WIDTH_SIZE_ENGINEER;
-
         //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
         heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
         heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
 
         // создание keyPanel
-        keyPanel = new JPanel();
-        keyPanel.setBackground(paneColor);
-        keyPanel.setPreferredSize (new Dimension(WIDTH_SIZE_ENGINEER,HIEGHT_SIZE_KEY));
+        keyPanelEngineer = new JPanel();
+        keyPanelEngineer.setBackground(paneColor);
+        keyPanelEngineer.setPreferredSize (new Dimension(WIDTH_SIZE_ENGINEER,HIEGHT_SIZE_KEY));
 
     }
 
     void makeITCalculate() {
-        widthSizeText = WIDTH_SIZE_IT;
-
         //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
         heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
         heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
 
         // создание keyPanel
-        keyPanel = new JPanel();
-        keyPanel.setBackground(paneColor);
-        keyPanel.setPreferredSize (new Dimension(WIDTH_SIZE_IT,HIEGHT_SIZE_KEY));
+        keyPanelIT = new JPanel();
+            keyPanelIT.setBackground(paneColor);
+         keyPanelIT.setPreferredSize (new Dimension(WIDTH_SIZE_IT,HIEGHT_SIZE_KEY));
 
     }
 
@@ -819,50 +808,21 @@ class CalculateFace extends JFrame   {
     void makeCard() {
 
         cardTypeCalc = new CardLayout();            //компоновка
-        cardPanel = new JPanel();                   //колода
+        cardPanel = new JPanel(new CardLayout());                   //колода
         cardPanel.setLayout(cardTypeCalc);          //компоновка колоды
 
         //карты в колоде
-        commonPanel = new JPanel();
-                commonPanel.setLayout(new BoxLayout(commonPanel, BoxLayout.Y_AXIS));
-                add(Box.createVerticalGlue());
-                setContentPane(commonPanel);
+                    //keyPanelSimple
             makeCommonCalculate();
-            widthSizeText=WIDTH_SIZE_SIMPLE;
-            makeTextPanel();
-        commonPanel.add(textPanel);
-        commonPanel.add(keyPanel);
-
-
-        engineerPanel = new JPanel();
-                engineerPanel.setLayout(new BoxLayout(engineerPanel, BoxLayout.Y_AXIS));
-                add(Box.createVerticalGlue());
-                setContentPane(engineerPanel);
+                    //keyPanelEngineer
             makeEngineerCalculate();
-            widthSizeText=WIDTH_SIZE_ENGINEER;
-            makeTextPanel();
-        engineerPanel.add(textPanel);
-        engineerPanel.add(keyPanel);
-
-
-
-        itPanel = new JPanel();
-                itPanel.setLayout(new BoxLayout(itPanel, BoxLayout.Y_AXIS));
-                add(Box.createVerticalGlue());
-                setContentPane(itPanel);
+                    // keyPanelIT
             makeITCalculate();
-            widthSizeText=WIDTH_SIZE_IT;
-            makeTextPanel();
-        itPanel.add(textPanel);
-        itPanel.add(keyPanel);
 
-
-        //формирование колоды
-        cardPanel.add(commonPanel, "Simple");
-        cardPanel.add(engineerPanel, "Engineer");
-        cardPanel.add(itPanel, "ITcalc");
-
-        frame.add(cardPanel);                         //ввод колоды в главный фрейм
+                    //формирование колоды
+        cardPanel.add(keyPanelSimple, "Simple");
+        cardPanel.add(keyPanelEngineer, "Engineer");
+        cardPanel.add(keyPanelIT, "ITcalc");
     }
 
 
@@ -903,20 +863,37 @@ class CalculateFace extends JFrame   {
 
         jmb.add(jmView);
 
+
         jmiCommon.addActionListener((ae)->{
-            cardTypeCalc.show(cardPanel,"Simple");
             frame.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, heightSizeMain));
+            widthSizeText=WIDTH_SIZE_SIMPLE;
+                scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+                labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+                scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
+            cardTypeCalc.show(cardPanel,"Simple");
+
             frame.pack();
+                keyPanelSimple.requestFocusInWindow();
         });
         jmiEngineer.addActionListener((ae)->{
             cardTypeCalc.show(cardPanel,"Engineer");
             frame.setPreferredSize(new Dimension(WIDTH_SIZE_ENGINEER, heightSizeMain));
+            widthSizeText=WIDTH_SIZE_ENGINEER;
+                scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+                labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+                scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
             frame.pack();
+                keyPanelEngineer.requestFocusInWindow();
         });
         jmiIT.addActionListener((ae)->{
             cardTypeCalc.show(cardPanel,"ITcalc");
             frame.setPreferredSize(new Dimension(WIDTH_SIZE_IT, heightSizeMain));
+            widthSizeText=WIDTH_SIZE_IT;
+                scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+                labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+                scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
             frame.pack();
+                keyPanelIT.requestFocusInWindow();
         });
         //       jchbLog.addActionListener(this);
         //       jchbGroupDigit.addActionListener(this);
