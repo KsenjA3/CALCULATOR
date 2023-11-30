@@ -15,7 +15,7 @@ class CalculateFace extends JFrame   {
     JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
     JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
 
-    private int N;                                  // restriction amount  input figures to number
+    private int N;                           // restriction amount  input figures to number
 
     private String strNumber;               //inner number
     private Double dNumber;
@@ -47,7 +47,7 @@ class CalculateFace extends JFrame   {
     //панели, колода карт
     JFrame frame;
     CardLayout cardTypeCalc;
-    JPanel container;
+    Container container;
     JPanel cardPanel, commonPanel, engineerPanel, itPanel;
     JPanel  keyPanelSimple, keyPanelEngineer, keyPanelIT;
     JPanel textPanel, labPanel;
@@ -58,7 +58,7 @@ class CalculateFace extends JFrame   {
     JTextPane textInput, textLog;
 
                             //используемые шрифты
-    Font ButtonFont, ButtonFontM,  MenuFont, InputFont, ResultFont, LogFont;
+    Font ButtonFont, ButtonFontM,  MenuFont,MenuItemFont, InputFont, ResultFont, LogFont;
     SimpleAttributeSet textInputAttributes;         //для JTextPane
     static final String FRONT_NAME_TEXT_INPUT = "Arial";
     static final String FRONT_NAME_TEXT_LOG = "Arial";
@@ -67,7 +67,7 @@ class CalculateFace extends JFrame   {
     static final int FRONT_TEXT_RESULT = 20 ;
 
     //measure windows calculators
-    int    heightSizeMain, heightSizeText;
+    int heightSizeMain, heightSizeText;
     int widthSizeText;
                             //height text windows
     static final int SIZE_TEXT_RESULT = 28;
@@ -78,7 +78,7 @@ class CalculateFace extends JFrame   {
                             //width windows calculators
     static final int WIDTH_SIZE_SIMPLE = 260+20;
     static final int WIDTH_SIZE_ENGINEER = 600;
-    static final int WIDTH_SIZE_IT = 150;
+    static final int WIDTH_SIZE_IT = 350;
 
     CalculateFace() {
 
@@ -104,6 +104,7 @@ class CalculateFace extends JFrame   {
         ButtonFont= new Font("Franklin Gothic Medium", Font.PLAIN, 30);
         ButtonFontM= new Font("Cambria", Font.PLAIN, 30);
         MenuFont =new Font("Arial", Font.PLAIN, 15);
+        MenuItemFont =new Font("Arial", Font.PLAIN, 13);
         InputFont=new Font("Arial", Font.PLAIN, FRONT_TEXT_INPUT);
         ResultFont= new Font("Arial", Font.PLAIN, FRONT_TEXT_RESULT);
         LogFont =new Font("Arial", Font.PLAIN, 18);
@@ -121,7 +122,7 @@ class CalculateFace extends JFrame   {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
                         //создание корневой панели
-        container = new JPanel();
+        container = getContentPane();
             container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         frame.add(Box.createVerticalGlue());
         frame.setContentPane(container);
@@ -130,23 +131,25 @@ class CalculateFace extends JFrame   {
 
         makeCard();
         makeTextPanel();                     //input panel
-            ignoreLettersInput();
+
+        ignoreLettersInput();
         container.add(textPanel);
         container.add(cardPanel);
 
         jmb= new JMenuBar();
             makeViewMenu();                     // меню Вид
             makeCorrectMenu();                  //меню Правка
-            makebriefMenu();                    //меню Справка
+            makeBriefMenu();                    //меню Справка
             makePopupMenu();                    // всплывающее меню
         frame.setJMenuBar(jmb);
 
-        widthSizeText=WIDTH_SIZE_SIMPLE;
-            scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
-            labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
-            scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
-        frame.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, heightSizeMain));
+                                //height frame depends on menu settings
+        heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
+
+                                //create init calculator
         cardTypeCalc.show(cardPanel,"Simple");
+        widthSizeText=WIDTH_SIZE_SIMPLE;
+        setPreferredSizePanels ();
 
         frame.pack();
             keyPanelSimple.requestFocusInWindow();
@@ -421,7 +424,6 @@ class CalculateFace extends JFrame   {
                     strNumber = "0";                      // если после = начнется ввод с "."
                     func= null;
                     strInput= "   ";                      // ввод числа после =
-                    //                  nameSign=" ";
                 }
             }
             nameSign = name;
@@ -552,7 +554,7 @@ class CalculateFace extends JFrame   {
             }
         }
     }
-
+                                    //action for textPanel
     class FocusKeyPanel extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -575,16 +577,32 @@ class CalculateFace extends JFrame   {
                     }
                 }
             }
+                                                //смена шрифта
+            StyleConstants.setFontSize(textInputAttributes,FRONT_TEXT_RESULT);
+            textInput.setParagraphAttributes(textInputAttributes, true);
+                textInput.setText(strInput=str);
 
-            textInput.setText(strInput=str);
-            System.out.println(str);
-
+            textRezult.setFont(InputFont);
             dResult= calculateCurrent.calculateInput(strInput);
-
             strResult = "=" + Service.printNumber(dResult);
-            textRezult.setText(strResult);
+                textRezult.setText(strResult);
 
-            keyPanelSimple.requestFocusInWindow();
+            sbLog.append(strInput).append("\n").append(strResult).append("\n");
+                textLog.setText(sbLog.toString());
+
+            Service.unblockedAll(bPercent);       // работа % без ошибок
+            strNumber = "0";                      // если после = начнется ввод с "."
+            func= null;
+            strInput= "   ";                      // ввод числа после =
+
+
+                                    //focus to visible keyPenel
+                for(Component comp : cardPanel.getComponents()) {
+                    if (comp.isVisible()) {
+                        comp.requestFocusInWindow();
+                    }
+                }
+
         }
     }
 
@@ -624,7 +642,7 @@ class CalculateFace extends JFrame   {
         borderText = BorderFactory.createLineBorder(Color.BLACK, 2);
             textPanel.setBorder(borderText);
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        add(Box.createVerticalGlue());
+  //      add(Box.createVerticalGlue());
 
         textInput = new JTextPane();
             textInput.setBackground(paneColor);
@@ -661,123 +679,110 @@ class CalculateFace extends JFrame   {
             scrollLog.setBorder(null);
 
 
+        //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
+        heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
+
 
         textPanel.add(scrollLog);
         textPanel.add(scrollinput );
         textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
     }
 
-
-
-
+    void makeGridBagConstraints(int gridy,int gridx, int gridwidth,int gridheight, int ipady, int ipadx ) {
+        gbc.gridy = gridy;
+        gbc.gridx = gridx;
+        gbc.gridwidth = gridwidth;
+        gbc.gridheight = gridheight;
+        gbc.ipady = ipady;
+        gbc.ipadx = ipadx;
+    }
 
     // создание простого калькулятора
     void makeCommonCalculate() {
-        // размеры всех окон
-
- //       heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT;
-        heightSizeText = SIZE_TEXT_INPUT+SIZE_TEXT_RESULT+SIZE_TEXT_LOG;
-        heightSizeMain = heightSizeText+HIEGHT_SIZE_KEY;
 
                         // создание keyPanel
         keyPanelSimple = new JPanel();
             keyPanelSimple.setBackground(paneColor);
             keyPanelSimple.setPreferredSize (new Dimension(WIDTH_SIZE_SIMPLE,HIEGHT_SIZE_KEY));
 
-
                         // сеточно-контейнерная компоновка keyPanel
         keyPanelSimple.setLayout(gbag);
-        gbc.fill = GridBagConstraints.CENTER;
-        gbc.weightx = 100;
-        gbc.weighty = 100;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.ipady = 0;
-        gbc.ipadx = 10;
-        gbc.gridy = 0;
-        gbc.gridx = 0;
+            gbc.fill = GridBagConstraints.CENTER;
+            gbc.weightx = 100;
+            gbc.weighty = 100;
+        // line 1
+        makeGridBagConstraints(0,0,1,1,0,10);
         keyPanelSimple.add(bClear, gbc);
-        gbc.ipadx = 29;
-        gbc.gridx = 1;
+
+        makeGridBagConstraints(0,1,1,1,0,29);
         keyPanelSimple.add(bDel, gbc);
-        gbc.ipadx = 1;
-        gbc.gridx = 2;
+
+        makeGridBagConstraints(0,2,1,1,0,1);
         keyPanelSimple.add(bMemoryHold, gbc);
-        gbc.ipadx = 4;
-        gbc.gridx = 3;
+
+        makeGridBagConstraints(0,3,1,1,0,4);
         keyPanelSimple.add(bMemoryAdd, gbc);
-        gbc.ipadx = 11;
-        gbc.gridx = 4;
+
+        makeGridBagConstraints(0,4,1,1,0,11);
         keyPanelSimple.add(bMemoryDel, gbc);
 
-        gbc.ipady = 0;
-        gbc.ipadx = 20;
-        gbc.gridy = 1;
-        gbc.gridx = 0;
+        //line 2
+        makeGridBagConstraints(1,0,1,1,0,20);
         keyPanelSimple.add(b7, gbc);
-        gbc.gridx = 1;
+
+        makeGridBagConstraints(1,1,1,1,0,20);
         keyPanelSimple.add(b8, gbc);
-        gbc.gridx = 2;
+
+        makeGridBagConstraints(1,2,1,1,0,20);
         keyPanelSimple.add(b9, gbc);
-        gbc.ipadx = 8;
-        gbc.gridx = 3;
+
+        makeGridBagConstraints(1,3,1,1,0,8);
         keyPanelSimple.add(bDivide, gbc);
-        gbc.ipadx = 0;
-        gbc.gridx = 4;
+
+        makeGridBagConstraints(1,4,1,1,0,0);
         keyPanelSimple.add(bPercent, gbc);
 
-        gbc.ipadx = 20;
-        gbc.gridy = 2;
-        gbc.gridx = 0;
+        //line 3
+        makeGridBagConstraints(2,0,1,1,0,20);
         keyPanelSimple.add(b4, gbc);
-        gbc.gridx = 1;
+
+        makeGridBagConstraints(2,1,1,1,0,20);
         keyPanelSimple.add(b5, gbc);
-        gbc.gridx = 2;
+
+        makeGridBagConstraints(2,2,1,1,0,20);
         keyPanelSimple.add(b6, gbc);
-        gbc.ipadx = 6;
-        gbc.gridx = 3;
+
+        makeGridBagConstraints(2,3,1,1,0,6);
         keyPanelSimple.add(bMultiply, gbc);
-        gbc.gridx = 4;
-        gbc.ipadx = 8;
+
+        makeGridBagConstraints(2,4,1,1,0,8);
         keyPanelSimple.add(bRadical, gbc);
 
-        gbc.ipadx = 20;
-        gbc.gridy = 3;
-        gbc.gridx = 0;
+        //line 4
+        makeGridBagConstraints(3, 0,1,1,0,20);
         keyPanelSimple.add(b1, gbc);
-        gbc.gridx = 1;
+
+        makeGridBagConstraints(3, 1,1,1,0,20);
         keyPanelSimple.add(b2, gbc);
-        gbc.gridx = 2;
+
+        makeGridBagConstraints(3, 2,1,1,0,20);
         keyPanelSimple.add(b3, gbc);
-        gbc.ipadx = 6;
-        gbc.gridx = 3;
+
+        makeGridBagConstraints(3, 3,1,1,0,6);
         keyPanelSimple.add(bPlus, gbc);
 
-        gbc.ipadx = 6;
-        gbc.ipady = 53;
-        gbc.gridx = 4;
-        gbc.gridheight = 2;
+        makeGridBagConstraints(3, 4,1,2,53,6);
         keyPanelSimple.add(bResult, gbc);
 
-        gbc.ipadx = 71;
-        gbc.ipady = 0;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 2;
-        gbc.gridy = 4;
-        gbc.gridx = 0;
+        //line 5
+        makeGridBagConstraints(4, 0,2,1,0,71);
         keyPanelSimple.add(b0, gbc);
 
-        gbc.ipadx = 30;
-        gbc.gridwidth = 1;
-        gbc.gridx = 2;
+        makeGridBagConstraints(4, 2,1,1,0,30);
         keyPanelSimple.add(bPoint, gbc);
 
-        gbc.ipadx = 16;
-        gbc.ipady = 0;
-        gbc.gridx = 3;
+        makeGridBagConstraints(4, 3,1,1,0,16);
         keyPanelSimple.add(bMinus, gbc);
-
-
     }
 
     void makeEngineerCalculate() {
@@ -832,102 +837,156 @@ class CalculateFace extends JFrame   {
         JMenu jmView = new JMenu("Вид");
             jmView.setFont(MenuFont);
 
-        var jmiCommon = new JRadioButtonMenuItem("Обычный");
-            jmiCommon.setFont(MenuFont);
-            jmiCommon.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
-        var jmiEngineer = new JRadioButtonMenuItem("Инженерный");
-            jmiEngineer.setFont(MenuFont);
-            jmiEngineer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
-        var jmiIT = new JRadioButtonMenuItem("IT");
-            jmiIT.setFont(MenuFont);
-            jmiIT.setMnemonic('I');
-            jmiIT.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
-        var bg = new ButtonGroup();
-            bg.add(jmiCommon);
-            bg.add(jmiEngineer);
-            bg.add(jmiIT);
-
-        var jchbLog = new JCheckBoxMenuItem("Журнал");
-            jchbLog.setFont(MenuFont);
-            jchbLog.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_DOWN_MASK));
-        var jchbGroupDigit = new JCheckBoxMenuItem("Числовые разряды");
-            jchbGroupDigit.setFont(MenuFont);
-            jchbGroupDigit.setToolTipText("Группировка цифр по разрядам");
-
+        var actionCommon = new TypeCalculation("Обычный", KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
+        var jmiCommon = new JRadioButtonMenuItem(actionCommon);
+            jmiCommon.setFont(MenuItemFont);
         jmView.add(jmiCommon);
+
+        var actionEngineer = new TypeCalculation("Инженерный", KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
+        var jmiEngineer = new JRadioButtonMenuItem(actionEngineer);
+            jmiEngineer.setFont(MenuItemFont);
         jmView.add(jmiEngineer);
+
+        var actionIT = new TypeCalculation("IT", KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
+        var jmiIT = new JRadioButtonMenuItem(actionIT);
+            jmiIT.setFont(MenuItemFont);
         jmView.add(jmiIT);
         jmView.addSeparator();
+
+        var bg = new ButtonGroup();
+        bg.add(jmiCommon);
+        bg.add(jmiEngineer);
+        bg.add(jmiIT);
+
+        var jchbLog = new JCheckBoxMenuItem("Журнал");
+            jchbLog.setFont(MenuItemFont);
+            jchbLog.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_DOWN_MASK));
         jmView.add(jchbLog);
+
+        var jchbGroupDigit = new JCheckBoxMenuItem("Числовые разряды");
+            jchbGroupDigit.setFont(MenuItemFont);
+            jchbGroupDigit.setToolTipText("Группировка цифр по разрядам");
         jmView.add(jchbGroupDigit);
 
         jmb.add(jmView);
 
 
-        jmiCommon.addActionListener((ae)->{
-            frame.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, heightSizeMain));
-            widthSizeText=WIDTH_SIZE_SIMPLE;
-                scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
-                labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
-                scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
-            cardTypeCalc.show(cardPanel,"Simple");
-
-            frame.pack();
-                keyPanelSimple.requestFocusInWindow();
-        });
-        jmiEngineer.addActionListener((ae)->{
-            cardTypeCalc.show(cardPanel,"Engineer");
-            frame.setPreferredSize(new Dimension(WIDTH_SIZE_ENGINEER, heightSizeMain));
-            widthSizeText=WIDTH_SIZE_ENGINEER;
-                scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
-                labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
-                scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
-            frame.pack();
-                keyPanelEngineer.requestFocusInWindow();
-        });
-        jmiIT.addActionListener((ae)->{
-            cardTypeCalc.show(cardPanel,"ITcalc");
-            frame.setPreferredSize(new Dimension(WIDTH_SIZE_IT, heightSizeMain));
-            widthSizeText=WIDTH_SIZE_IT;
-                scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
-                labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
-                scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
-            frame.pack();
-                keyPanelIT.requestFocusInWindow();
-        });
         //       jchbLog.addActionListener(this);
         //       jchbGroupDigit.addActionListener(this);
 
     }
 
+    class TypeCalculation extends AbstractAction {
+        TypeCalculation (String name, KeyStroke accel) {
+            super(name);
+            putValue(ACCELERATOR_KEY, accel);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("Обычный")) {
+                cardTypeCalc.show(cardPanel,"Simple");
+                widthSizeText=WIDTH_SIZE_SIMPLE;
+                setPreferredSizePanels ();
+                frame.pack();
+                keyPanelSimple.requestFocusInWindow();
+
+            } else if (e.getActionCommand().equals("Инженерный")) {
+                cardTypeCalc.show(cardPanel,"Engineer");
+                widthSizeText=WIDTH_SIZE_ENGINEER;
+                setPreferredSizePanels ();
+                frame.pack();
+                keyPanelEngineer.requestFocusInWindow();
+
+            }else if (e.getActionCommand().equals("IT")){
+                cardTypeCalc.show(cardPanel,"ITcalc");
+                widthSizeText=WIDTH_SIZE_IT;
+                setPreferredSizePanels ();
+                frame.pack();
+                keyPanelIT.requestFocusInWindow();
+            }
+        }
+    }
+
+    void setPreferredSizePanels () {
+        frame.setPreferredSize(new Dimension(widthSizeText, heightSizeMain));
+        scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+        labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+        scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
+    }
 
     void makeCorrectMenu() {
         JMenu jmCorrect = new JMenu("Правка");
+        jmCorrect.setFont(MenuFont);
 
+        var jmiCopy = new JMenuItem("Копировать");
+            jmiCopy.setFont(MenuItemFont);
+            jmCorrect.add(jmiCopy);
+
+        var jmiPaste = new JMenuItem("Вставить");
+            jmiPaste.setFont(MenuItemFont);
+            jmCorrect.add(jmiPaste);
+        jmCorrect.addSeparator();
+
+        var jmiLog = new JMenu("Журнал");
+            jmiLog.setFont(MenuItemFont);
+            jmCorrect.add(jmiLog);
+        var jmiClearLog = new JMenuItem("Очистить журнал");
+             jmiClearLog.setFont(MenuItemFont);
+             jmiLog.add(jmiClearLog) ;
+        var jmiCopyLog = new JMenuItem("Копировать журнал");
+             jmiCopyLog.setFont(MenuItemFont);
+             jmiLog.add(jmiCopyLog) ;
+
+        jmb.add(jmCorrect);
     }
 
-    void makebriefMenu() {
+    void makeBriefMenu() {
+        JMenu jmbrief = new JMenu("Справка");
+            jmbrief.setFont(MenuFont);
 
+        var jmiBrief = new JMenuItem("Посмотреть справку");
+            jmbrief.add(jmiBrief);
+            jmiBrief.setFont(MenuItemFont);
+        jmb.add(jmbrief);
     }
 
     void makePopupMenu() {
         jpu = new JPopupMenu();
+        var jmiCopy = new JMenuItem("Копировать");
+        var jmiPaste = new JMenuItem("Вставить");
 
+        var jmiShowLog = new JMenuItem("Показать журнал");
+        var jmiHideLog = new JMenuItem("Скрыть журнал");
+        var jmiClearLog = new JMenuItem("Очистить журнал");
+        var jmiCopyLog = new JMenuItem("Копировать журнал");
+
+        jpu.add (jmiCopy);
+        jpu.add (jmiPaste);
+        jpu.addSeparator();
+        jpu.add (jmiShowLog);
+        jpu.add (jmiHideLog);
+        jpu.add (jmiClearLog);
+        jpu.add (jmiCopyLog);
     }
 
-    // установить размеры окна
-  //  public Dimension getPreferredSize() { return new Dimension(widthSizeMain, heightSizeMain); }
+    class Log extends AbstractAction {
 
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new CalculateFace();
-            }
-        });
+        Log (String name) {
+            super(name);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+
     }
 
 }
+
+
+
 
 
 
