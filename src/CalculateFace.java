@@ -12,9 +12,9 @@ class CalculateFace extends JFrame {
     /**
      * button simple calculation
      */
-    JButton b, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint;
-    JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
-    JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
+    private JButton b, b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint;
+    private JButton bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical, bResult;
+    private JButton bMemoryAdd, bMemoryDel, bMemoryHold, bClear, bDel;
 
     /**
      * restriction amount  input figures to number
@@ -71,46 +71,46 @@ class CalculateFace extends JFrame {
     /**
      * VIEW
      */
-    GridBagLayout gbag;
-    GridBagConstraints gbc;
-    Color paneColor, bColor, signColor, bMColor;    //used colors
-    Border borderButton, borderText;                //borders used by elements
+    private GridBagLayout gbag;
+    private GridBagConstraints gbc;
+    private Color paneColor, bColor, signColor, bMColor;    //used colors
+    private Border borderButton, borderText;                //borders used by elements
 
     /**
      * MENU
      */
-    JMenuBar jmb;
-    JPopupMenu jpu;
-    JCheckBoxMenuItem jchbLog;
-    JMenuItem jmiShowLogPopup, jmiHideLogPopup, jmiClearLogPopup, jmiCopyLogPopup,
-            jmiClearLog, jmiCopyLog;
-    JRadioButtonMenuItem jmiSimple, jmiEngineer, jmiIT;
-    MakeMenuItem actionCopy, actionPaste, actionClearLog, actionCopyLog,
+    private JMenuBar jmb;
+    private JPopupMenu jpu;
+    private JCheckBoxMenuItem jchbLog;
+    private JMenuItem jmiShowLogPopup, jmiHideLogPopup, jmiClearLogPopup, jmiCopyLogPopup,
+                            jmiClearLog, jmiCopyLog;
+    private JRadioButtonMenuItem jmiSimple, jmiEngineer, jmiIT;
+    private MakeMenuItem actionCopy, actionPaste, actionClearLog, actionCopyLog,
                  actionBrief, actionSimple, actionEngineer, actionIT;
-    MakeLogMenuItem actionLog, actionShowLogPopup, actionHideLogPopup;
+    private MakeLogMenuItem actionLog, actionShowLogPopup, actionHideLogPopup;
 
     /**
      * Components
      */
-    JFrame frame;
-    Container container;
-    CardLayout cardTypeCalc;
-    JPanel cardPanel;
-    JPanel keyPanelSimple, keyPanelEngineer, keyPanelIT;
-    JPanel textPanel, labPanel;
+    private JFrame frame;
+    private Container container;
+    private CardLayout cardTypeCalc;
+    private JPanel cardPanel;
+    private JPanel keyPanelSimple, keyPanelEngineer, keyPanelIT;
+    private JPanel textPanel, labPanel;
 
     /**
      * Text output components
      */
-    JLabel textRezult;
-    JScrollPane scrollinput, scrollLog;
-    JTextPane textInput, textLog;
+    private JLabel textRezult;
+    private JScrollPane scrollinput, scrollLog;
+    private JTextPane textInput, textLog;
 
     /**
      * FONTs
      */
-    Font ButtonFont, ButtonFontM, MenuFont, MenuItemFont, InputFont, ResultFont, LogFont;
-    SimpleAttributeSet textInputAttributes;         //for JTextPane
+    private Font ButtonFont, ButtonFontM, MenuFont, MenuItemFont, InputFont, ResultFont, LogFont;
+    private SimpleAttributeSet textInputAttributes;         //for JTextPane
     static final String FRONT_NAME_TEXT_INPUT = "Arial";
     static final String FRONT_NAME_TEXT_LOG = "Arial";
     static final int FRONT_TEXT_LOG = 18;
@@ -122,8 +122,8 @@ class CalculateFace extends JFrame {
      * height frame, result height textPanel
      * selected width
      */
-    int heightSizeMain, heightSizeText;
-    int widthSizeText;
+    private int heightSizeMain, heightSizeText;
+    private int widthSizeText;
 
     /**
      * SIZE COMPONENTs
@@ -230,30 +230,7 @@ class CalculateFace extends JFrame {
         frame.setVisible(true);
     }
 
-
-    /**
-     * mouseListener for PopupMenu
-     * @param compVal list of components with PopupMenu
-     */
-    private void mouseListenerPopupMenu (JComponent ... compVal){
-        for (JComponent comp :compVal) {
-            comp.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(e.isPopupTrigger())
-                        jpu.show(e.getComponent(),e.getX(), e.getY());
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    if(e.isPopupTrigger())
-                        jpu.show(e.getComponent(),e.getX(), e.getY());
-            }
-        });
-    }
-
-}
-
+//BUTTONS
 
     /**
      * create ALL Buttons
@@ -309,13 +286,13 @@ class CalculateFace extends JFrame {
         bDel = createButton(new CreateWorkButton("C"),
                 "C", KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), bMColor, ButtonFontM);
         bMemoryAdd = createButton(new CreateWorkButton("M+"),
-                "M+", KeyStroke.getKeyStroke(KeyEvent.VK_ADD, InputEvent.ALT_DOWN_MASK), bMColor, ButtonFontM);
+                "M+", KeyStroke.getKeyStroke(KeyEvent.VK_ADD, InputEvent.CTRL_DOWN_MASK), bMColor, ButtonFontM);
         bMemoryDel = createButton(new CreateWorkButton("M-"),
-                "M-", KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, InputEvent.ALT_DOWN_MASK), bMColor, ButtonFontM);
+                "M-", KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, InputEvent.CTRL_DOWN_MASK), bMColor, ButtonFontM);
         bMemoryHold = createButton(new CreateWorkButton("MR"),
                 "MR", KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), bMColor, ButtonFontM);
 
-        Service.blockedAll(bMemoryHold);
+        blockedAll(bMemoryHold);
     }
 
     /**
@@ -344,7 +321,6 @@ class CalculateFace extends JFrame {
         return b;
     }
 
-
     /**
      * behavior number Buttons
      */
@@ -358,41 +334,39 @@ class CalculateFace extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = e.getActionCommand();
-            //возврат шрифта после его изменений в =
-            textRezult.setFont(ResultFont);
-            StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_INPUT);
-            textInput.setParagraphAttributes(textInputAttributes, true);
+                    //return fonts
+            setFontBoldInput ();
 
             if (N < 15) {
                 N++;
 
-                strNumber = strNumber + name;             // формируем вводимое число типа String
-                dNumber = Double.parseDouble(strNumber);  // из String в Double
+                strNumber = strNumber + name;             // create input number type String
+                dNumber = Double.parseDouble(strNumber);  // from String to Double
 
 
-                if (strNumber.equals("0.") && name.equals("."))     //вывод на экран ввода в начале ввода
+                if (strNumber.equals("0.") && name.equals("."))     //output in begining
                     textInput.setText(strInput = strInput + strNumber);
                 else
                     textInput.setText(strInput = strInput + name);
 
-                // деление на 0 исключить
+                                // except divide for 0
                 if ((dNumber == 0.0) && (nameSign.equals(" / "))) {
                     strResult = "деление на 0 не возможно";
-                    Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
+                    blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
                             bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
                 } else {
 
                     dResult = calculateCurrent.calculateInput(strInput);
 
-                    strResult = "=" + Service.printNumber(dResult);
-                    Service.unblockedAll(bPercent);       // работа % без ошибок
+                    strResult = "=" + printNumber(dResult);
+                    unblockedAll(bPercent);       // work  % without mistakes
                 }
 
                 if (name.equals(".")) {
-                    Service.blockedAll(bPoint);   //в числе не м.б. две точки
+                    blockedAll(bPoint);   //в числе не м.б. две точки
                     // разблокировка клавиш при попытке деления на 0
-                    Service.unblockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
+                    unblockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                             bResult, bMemoryAdd, bMemoryDel, bDel,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
                 }
@@ -415,16 +389,14 @@ class CalculateFace extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            //возврат шрифта после его изменений в =
-            textRezult.setFont(ResultFont);
-            StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_INPUT);
-            textInput.setParagraphAttributes(textInputAttributes, true);
+                        //return fonts
+            setFontBoldInput ();
 
             strNumber = "0";                      //подготовка для ввода очередного числа
             N = 0;
 
-            Service.unblockedAll(bPoint);       // разрешение на дробные числа
-            Service.blockedAll(bPercent);       // работа % без ошибок
+            unblockedAll(bPoint);       // разрешение на дробные числа
+            blockedAll(bPercent);       // work  % without mistakes
 
             //запись в в окно ввода
             if (!name.equals(" % "))       // delete % in input screen
@@ -453,7 +425,7 @@ class CalculateFace extends JFrame {
                                 default -> textInput.setText(strInput = name);      // начало ввада с sqrt
                             }
                         } else              // начало ввода с [-+*/] или число [-+*/]
-                            textInput.setText(strInput = Service.printNumber(dResult) + name);
+                            textInput.setText(strInput = printNumber(dResult) + name);
 
                     else // func!=null
                         switch (strInput.substring(strInput.length() - 3)) {
@@ -505,37 +477,35 @@ class CalculateFace extends JFrame {
                     dResultPercent = dResult;
                 }
                 case " % " -> {
-                    Service.unblockedAll(bPercent);       // работа % без ошибок
+                    unblockedAll(bPercent);       // work  % without mistakes
 
                     if (func == null) {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
                                 dResultPercent, dNumber);
-                        textInput.setText(Service.printNumber(dResult));
+                        textInput.setText(printNumber(dResult));
                     } else {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
                                 dResultPercent, dNumber);
 
-                        textInput.setText(strInput = strInputFormerSign + Service.printNumber(
-                                calculateCurrent.calculateInput(Service.printNumber(dResult) +
-                                        " - " + Service.printNumber(dResultPercent))));
+                        textInput.setText(strInput = strInputFormerSign + printNumber(
+                                calculateCurrent.calculateInput(printNumber(dResult) +
+                                        " - " + printNumber(dResultPercent))));
                     }
-                    strResult = "=" + Service.printNumber(dResult);
+                    strResult = "=" + printNumber(dResult);
                     textRezult.setText(strResult);
 
                     func = null;
-                    strInput = "   ";            // ввод числа после %
+                    strInput = "   ";            // input number after %
                 }
                 case " = " -> {
-                    textRezult.setFont(InputFont);          //смена шрифта
+                    setFontBoldResult ();          //change font
                     textRezult.setText(strResult);
-                    StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_RESULT);
-                    textInput.setParagraphAttributes(textInputAttributes, true);
                     textInput.setText(strInput);
 
                     sbLog.append(strInput).append("\n").append(strResult).append("\n");
                     textLog.setText(sbLog.toString());
 
-                    Service.unblockedAll(bPercent);       // работа % без ошибок
+                    unblockedAll(bPercent);       // work  % without mistakes
 
                     strNumber = "0";                      // если после = начнется ввод с "."
                     func = null;
@@ -567,17 +537,17 @@ class CalculateFace extends JFrame {
 
                 case "M+" -> {
                     memory = dResult;
-                    Service.unblockedAll(bMemoryHold);
+                    unblockedAll(bMemoryHold);
                 }
                 case "M-" -> {
                     memory = null;
-                    Service.blockedAll(bMemoryHold);
+                    blockedAll(bMemoryHold);
                 }
                 case "MR" -> {
                     dNumber = memory;
-                    // вывод на экран ввода
+
                     switch (strInput.substring(strInput.length() - 1)) {
-                        // если до MR было число
+                                        // before MR was number
                         case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "." -> {
                             boolean isFormerNumber = true;
 
@@ -589,34 +559,34 @@ class CalculateFace extends JFrame {
                                     default -> isFormerNumber = false;
                                 }
                             }
-                            textInput.setText(strInput = strInput + Service.printNumber(memory));
+                            textInput.setText(strInput = strInput + printNumber(memory));
                         }
-                        // если до MR был знак
-                        default -> textInput.setText(strInput = strInput + Service.printNumber(memory));
+                                            // before MR was sign
+                        default -> textInput.setText(strInput = strInput + printNumber(memory));
                     }
-                    // деление на 0 исключить
+                                // except divide for 0
                     if ((dNumber == 0.0) && (nameSign.equals(" / "))) {
                         strResult = "деление на 0 не возможно";
-                        Service.blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
+                        blockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0,
                                 bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical,
                                 bResult, bMemoryAdd, bMemoryDel, bMemoryHold);
                     } else {
                         dResult = calculateCurrent.calculateInput(strInput);
-                        strResult = "=" + Service.printNumber(dResult);
+                        strResult = "=" + printNumber(dResult);
                     }
 
                     textRezult.setText(strResult);           //запись на экран результата
 
-                    Service.unblockedAll(bPercent);       // работа % без ошибок
+                    unblockedAll(bPercent);       // work  % without mistakes
 
                 }
                 case "AC" -> {
-                    Service.unblockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint,
+                    unblockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint,
                             bMemoryAdd, bMemoryDel, bDel,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
 
                     if (memory != null)
-                        Service.unblockedAll(bMemoryHold);
+                        unblockedAll(bMemoryHold);
 
                     dNumber = 0.0;
                     strNumber = "0";
@@ -642,13 +612,15 @@ class CalculateFace extends JFrame {
                         default -> {
                             textInput.setText(strInput = strInput.substring(0, strInput.length() - 3));
                             dResult = calculateCurrent.calculateInput(strInput);
-
+                                            //begining work
+                            if (strInput.length()< 3)
+                                func=null;
                         }
                     }
-                    strResult = "=" + Service.printNumber(dResult);
+                    strResult = "=" + printNumber(dResult);
                     textRezult.setText(strResult);
 
-                    Service.unblockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint,
+                    unblockedAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bPoint,
                             bMemoryAdd, bMemoryDel, bMemoryHold, bDel,
                             bPlus, bMinus, bDivide, bMultiply, bPercent, bRadical);
                 }
@@ -656,11 +628,46 @@ class CalculateFace extends JFrame {
         }
     }
 
+//Service inputing
+
+    /**
+     * block keys on panel calculator
+     * @param v blocking keys
+     */
+    private static void blockedAll(JButton... v) {
+        for (JButton b : v)
+            b.setEnabled(false);
+    }
+
+    /**
+     * unblock keys on panel calculator
+     * @param v unblocking keys
+     */
+    private static void unblockedAll(JButton... v) {
+        for (JButton b : v)
+            b.setEnabled(true);
+    }
+
+    /**
+     * transform  Double number to String,
+     * consider that number can be Integer
+     * @param d transforming Double number to String
+     * @return String form number
+     */
+    private static String printNumber (Double d) {
+        String str =Double.toString(d);
+        if (str.substring(str.indexOf('.')+1).equals("0"))
+            return   str= Long.toString(d.longValue());
+        else return str;
+    }
+
+
+// Inputing from keyBoard
 
     /**
      * behavior keys inputing  to textPanel
      */
-    class TextPanelInputKeysAction extends AbstractAction {
+    private class TextPanelInputKeysAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             String str = textInput.getText();
@@ -682,46 +689,29 @@ class CalculateFace extends JFrame {
                     }
                 }
             }
-            //Change FONT
-            StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_RESULT);
-            textInput.setParagraphAttributes(textInputAttributes, true);
+                        //Change FONT
+            setFontBoldResult();
+
             textInput.setText(strInput = str);
 
-            textRezult.setFont(InputFont);
             dResult = calculateCurrent.calculateInput(strInput);
-            strResult = "=" + Service.printNumber(dResult);
+            strResult = "=" + printNumber(dResult);
             textRezult.setText(strResult);
 
             sbLog.append(strInput).append("\n").append(strResult).append("\n");
             textLog.setText(sbLog.toString());
 
-            Service.unblockedAll(bPercent);       // работа % без ошибок
+            unblockedAll(bPercent);       // work  % without mistakes
             strNumber = "0";                      // если после = начнется ввод с "."
             func = null;
             strInput = "   ";                      // ввод числа после =
 
 
-            //focus to visible keyPenel
-            for (Component comp : cardPanel.getComponents()) {
-                if (comp.isVisible()) {
-                    comp.requestFocusInWindow();
-                }
-            }
+                    //focus to visible keyPenel
+            focusVisibleKeyPenel ();
 
         }
     }
-
-
-    /**
-     * ignor keys inputing to textInputPanel
-     * @param var ignoring keys
-     */
-    private void ignoreLetter(char... var) {
-        for (char c : var) {
-            textInput.getInputMap().put(KeyStroke.getKeyStroke(c), "none");
-        }
-    }
-
 
     /**
      * inputing Keys to textPanel
@@ -743,59 +733,18 @@ class CalculateFace extends JFrame {
         );
     }
 
-
     /**
-     * make TextPanel
+     * ignor keys inputing to textInputPanel
+     * @param var ignoring keys
      */
-    private void makeTextPanel() {
-
-        textPanel = new JPanel();
-        textPanel.setBackground(paneColor);
-        textPanel.setLayout(gbag);
-        //textPanel.setPreferredSize(new Dimension(WidthSize,HeightSizeText)); автоматически
-        borderText = BorderFactory.createLineBorder(Color.BLACK, 2);
-        textPanel.setBorder(borderText);
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-
-        textInput = new JTextPane();
-        textInput.setBackground(paneColor);
-        textInputAttributes = new SimpleAttributeSet();
-        StyleConstants.setAlignment(textInputAttributes, StyleConstants.ALIGN_RIGHT);
-        StyleConstants.setFontFamily(textInputAttributes, FRONT_NAME_TEXT_INPUT);
-        StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_INPUT);
-        textInput.setParagraphAttributes(textInputAttributes, true);
-        scrollinput = new JScrollPane(textInput,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        //scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
-        scrollinput.setBorder(null);
-
-        textRezult = new JLabel("0");
-        textRezult.setFont(ResultFont);
-        labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        labPanel.setBackground(bColor);
-        //labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
-        labPanel.add(textRezult);
-
-        textLog = new JTextPane();
-        textLog.setBackground(bColor);
-        var textLogAttributes = new SimpleAttributeSet();
-        StyleConstants.setAlignment(textLogAttributes, StyleConstants.ALIGN_RIGHT);
-        StyleConstants.setFontFamily(textLogAttributes, FRONT_NAME_TEXT_LOG);
-        StyleConstants.setFontSize(textLogAttributes, FRONT_TEXT_LOG);
-        StyleConstants.setForeground(textLogAttributes, Color.GRAY);
-        textLog.setParagraphAttributes(textLogAttributes, true);
-        scrollLog = new JScrollPane(textLog,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        //scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
-        scrollLog.setBorder(null);
-
-        textPanel.add(scrollLog);
-        textPanel.add(scrollinput);
-        textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
+    private void ignoreLetter(char... var) {
+        for (char c : var) {
+            textInput.getInputMap().put(KeyStroke.getKeyStroke(c), "none");
+        }
     }
 
+
+ //service surface appearance
 
     /**
      * setings GridBagConstraints
@@ -815,18 +764,95 @@ class CalculateFace extends JFrame {
         gbc.ipadx = ipadx;
     }
 
+    /**
+     * repack frame with setting new size
+     */
+    private void repack () {
+        //height frame
+        heightSizeMain = heightSizeText + HIEGHT_SIZE_KEY;
+        setPreferredSizePanels();
+        frame.pack();
+        //focus necessary panel
+        focusVisibleKeyPenel ();
+    }
+
+    /**
+     * set Preferred Size
+     * frame and textPanels
+     */
+    private void setPreferredSizePanels () {
+        frame.setPreferredSize(new Dimension(widthSizeText, heightSizeMain));
+        scrollinput.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_INPUT));
+        labPanel.setPreferredSize(new Dimension(widthSizeText, HIEGHT_SIZE_TEXT_RESULT));
+        scrollLog.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_LOG));
+    }
+
+    /**
+     *show up Result font
+     */
+    private void setFontBoldResult (){
+        textRezult.setFont(InputFont);
+        StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_RESULT);
+        textInput.setParagraphAttributes(textInputAttributes, true);
+    }
+
+    /**
+     *show up InputPanel font
+     */
+    private void setFontBoldInput (){
+        textRezult.setFont(ResultFont);
+        StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_INPUT);
+        textInput.setParagraphAttributes(textInputAttributes, true);
+    }
+
+    /**
+     * focus to visible keyPenel
+     */
+    private void focusVisibleKeyPenel () {
+        for (Component comp : cardPanel.getComponents()) {
+            if (comp.isVisible()) {
+                comp.requestFocusInWindow();
+            }
+        }
+    }
+
+
+//PANELs
+
+    /**
+     * create CardLayout
+     */
+    private void makeCard() {
+
+        cardTypeCalc = new CardLayout();            //компоновка
+        cardPanel = new JPanel(new CardLayout());   //колода
+        cardPanel.setLayout(cardTypeCalc);          //компоновка колоды
+
+        //карты в колоде
+        //keyPanelSimple
+        makeSimpleCalculate();
+        //keyPanelEngineer
+        makeEngineerCalculate();
+        // keyPanelIT
+        makeITCalculate();
+
+        //формирование колоды
+        cardPanel.add(keyPanelSimple, "Simple");
+        cardPanel.add(keyPanelEngineer, "Engineer");
+        cardPanel.add(keyPanelIT, "ITcalc");
+    }
 
     /**
      * create Simple keyPanel
      */
     private void makeSimpleCalculate() {
 
-        // создание keyPanel
+        // create keyPanel
         keyPanelSimple = new JPanel();
         keyPanelSimple.setBackground(paneColor);
         keyPanelSimple.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, HIEGHT_SIZE_KEY));
 
-        // сеточно-контейнерная компоновка keyPanel
+        // GridBagLayout keyPanel
         keyPanelSimple.setLayout(gbag);
         gbc.fill = GridBagConstraints.CENTER;
         gbc.weightx = 100;
@@ -907,7 +933,6 @@ class CalculateFace extends JFrame {
         keyPanelSimple.add(bMinus, gbc);
     }
 
-
     /**
      * create Engineer keyPanel
      */
@@ -917,7 +942,6 @@ class CalculateFace extends JFrame {
         keyPanelEngineer.setPreferredSize(new Dimension(WIDTH_SIZE_ENGINEER, HIEGHT_SIZE_KEY));
 
     }
-
 
     /**
      * create IT keyPanel
@@ -929,29 +953,59 @@ class CalculateFace extends JFrame {
 
     }
 
-
     /**
-     * create CardLayout
+     * make TextPanel
      */
-    private void makeCard() {
+    private void makeTextPanel() {
 
-        cardTypeCalc = new CardLayout();            //компоновка
-        cardPanel = new JPanel(new CardLayout());                   //колода
-        cardPanel.setLayout(cardTypeCalc);          //компоновка колоды
+        textPanel = new JPanel();
+        textPanel.setBackground(paneColor);
+        textPanel.setLayout(gbag);
+        //textPanel.setPreferredSize(new Dimension(WidthSize,HeightSizeText)); автоматически
+        borderText = BorderFactory.createLineBorder(Color.BLACK, 2);
+        textPanel.setBorder(borderText);
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
-        //карты в колоде
-        //keyPanelSimple
-        makeSimpleCalculate();
-        //keyPanelEngineer
-        makeEngineerCalculate();
-        // keyPanelIT
-        makeITCalculate();
+        textInput = new JTextPane();
+        textInput.setBackground(paneColor);
+        textInputAttributes = new SimpleAttributeSet();
+        StyleConstants.setAlignment(textInputAttributes, StyleConstants.ALIGN_RIGHT);
+        StyleConstants.setFontFamily(textInputAttributes, FRONT_NAME_TEXT_INPUT);
+        scrollinput = new JScrollPane(textInput,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        //scrollinput.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_INPUT));
+        scrollinput.setBorder(null);
 
-        //формирование колоды
-        cardPanel.add(keyPanelSimple, "Simple");
-        cardPanel.add(keyPanelEngineer, "Engineer");
-        cardPanel.add(keyPanelIT, "ITcalc");
+        textRezult = new JLabel("0");
+        labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        labPanel.setBackground(bColor);
+        //labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
+        labPanel.add(textRezult);
+
+        //show up InputPanel font
+        setFontBoldInput();
+
+        textLog = new JTextPane();
+        textLog.setBackground(bColor);
+        var textLogAttributes = new SimpleAttributeSet();
+        StyleConstants.setAlignment(textLogAttributes, StyleConstants.ALIGN_RIGHT);
+        StyleConstants.setFontFamily(textLogAttributes, FRONT_NAME_TEXT_LOG);
+        StyleConstants.setFontSize(textLogAttributes, FRONT_TEXT_LOG);
+        StyleConstants.setForeground(textLogAttributes, Color.GRAY);
+        textLog.setParagraphAttributes(textLogAttributes, true);
+        scrollLog = new JScrollPane(textLog,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        //scrollLog.setPreferredSize(new Dimension(widthSizeText,SIZE_TEXT_LOG));
+        scrollLog.setBorder(null);
+
+        textPanel.add(scrollLog);
+        textPanel.add(scrollinput);
+        textPanel.add(labPanel, Component.RIGHT_ALIGNMENT);
     }
+
+//MENU
 
     /**
      * behavior MenuItem
@@ -1027,9 +1081,9 @@ class CalculateFace extends JFrame {
                 jmiClearLogPopup.setVisible(true);
                 jmiCopyLogPopup.setVisible(true);
 
-                    //height textPanel (height keyPanel = const)
+                //height textPanel (height keyPanel = const)
                 heightSizeText = HIEGHT_SIZE_TEXT_INPUT + HIEGHT_SIZE_TEXT_RESULT + HIEGHT_SIZE_TEXT_LOG;
-                    scrollLog.setVisible(true);
+                scrollLog.setVisible(true);
                 repack();
             } else{
                 jmiClearLog.setEnabled(false);
@@ -1039,43 +1093,13 @@ class CalculateFace extends JFrame {
                 jmiClearLogPopup.setVisible(false);
                 jmiCopyLogPopup.setVisible(false);
 
-                    //height textPanel (height keyPanel = const)
+                //height textPanel (height keyPanel = const)
                 heightSizeText = HIEGHT_SIZE_TEXT_INPUT + HIEGHT_SIZE_TEXT_RESULT;
-                    scrollLog.setVisible(false);
+                scrollLog.setVisible(false);
                 repack();
             }
         }
     }
-
-
-    /**
-     * repack frame with setting new size
-     */
-    private void repack () {
-                    //height frame
-        heightSizeMain = heightSizeText + HIEGHT_SIZE_KEY;
-        setPreferredSizePanels();
-        frame.pack();
-                    //focus necessary panel
-        if (jmiSimple.isSelected())
-            keyPanelSimple.requestFocusInWindow();
-        else if (jmiEngineer.isSelected())
-            keyPanelEngineer.requestFocusInWindow();
-        else if (jmiIT.isSelected())
-            keyPanelIT.requestFocusInWindow();
-    }
-
-    /**
-     * set Preferred Size
-     * frame and textPanels
-     */
-    private void setPreferredSizePanels () {
-        frame.setPreferredSize(new Dimension(widthSizeText, heightSizeMain));
-        scrollinput.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_INPUT));
-        labPanel.setPreferredSize(new Dimension(widthSizeText, HIEGHT_SIZE_TEXT_RESULT));
-        scrollLog.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_LOG));
-    }
-
 
     /**
      * make View Menu
@@ -1192,6 +1216,29 @@ class CalculateFace extends JFrame {
         jpu.add (jmiHideLogPopup);
         jpu.add (jmiClearLogPopup);
         jpu.add (jmiCopyLogPopup);
+    }
+
+    /**
+     * mouseListener for PopupMenu
+     * @param compVal list of components with PopupMenu
+     */
+    private void mouseListenerPopupMenu (JComponent ... compVal){
+        for (JComponent comp :compVal) {
+            comp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if(e.isPopupTrigger())
+                        jpu.show(e.getComponent(),e.getX(), e.getY());
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if(e.isPopupTrigger())
+                        jpu.show(e.getComponent(),e.getX(), e.getY());
+                }
+            });
+        }
+
     }
 
 }
