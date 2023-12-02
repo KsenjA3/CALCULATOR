@@ -235,7 +235,7 @@ class CalculateFace extends JFrame {
      * mouseListener for PopupMenu
      * @param compVal list of components with PopupMenu
      */
-    void mouseListenerPopupMenu (JComponent ... compVal){
+    private void mouseListenerPopupMenu (JComponent ... compVal){
         for (JComponent comp :compVal) {
             comp.addMouseListener(new MouseAdapter() {
                 @Override
@@ -258,7 +258,7 @@ class CalculateFace extends JFrame {
     /**
      * create ALL Buttons
       */
-    void makeButtons() {
+    private void makeButtons() {
         //SIMPLE CALCULATOR
 
         //Numbers
@@ -327,7 +327,7 @@ class CalculateFace extends JFrame {
      * @param font font button
      * @return button
      */
-    JButton createButton(Action bAction, String name,
+    private JButton createButton(Action bAction, String name,
                          KeyStroke keyStroke, Color color,Font font) {
         b = new JButton(bAction);
         b.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, name);
@@ -509,11 +509,11 @@ class CalculateFace extends JFrame {
 
                     if (func == null) {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
-                                dResultPercent, dNumber, dResult);
+                                dResultPercent, dNumber);
                         textInput.setText(Service.printNumber(dResult));
                     } else {
                         dResult = calculateCurrent.calculatePersent(func, nameSign,
-                                dResultPercent, dNumber, dResult);
+                                dResultPercent, dNumber);
 
                         textInput.setText(strInput = strInputFormerSign + Service.printNumber(
                                 calculateCurrent.calculateInput(Service.printNumber(dResult) +
@@ -716,7 +716,7 @@ class CalculateFace extends JFrame {
      * ignor keys inputing to textInputPanel
      * @param var ignoring keys
      */
-    void ignoreLetter(char... var) {
+    private void ignoreLetter(char... var) {
         for (char c : var) {
             textInput.getInputMap().put(KeyStroke.getKeyStroke(c), "none");
         }
@@ -726,7 +726,7 @@ class CalculateFace extends JFrame {
     /**
      * inputing Keys to textPanel
      */
-    void textPanelInputKeys() {
+    private void textPanelInputKeys() {
         var textPanelInputKeysAction = new TextPanelInputKeysAction();
         textInput.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "focusKeyPanel");
         textInput.getActionMap().put("focusKeyPanel", textPanelInputKeysAction);
@@ -747,7 +747,7 @@ class CalculateFace extends JFrame {
     /**
      * make TextPanel
      */
-    void makeTextPanel() {
+    private void makeTextPanel() {
 
         textPanel = new JPanel();
         textPanel.setBackground(paneColor);
@@ -806,7 +806,7 @@ class CalculateFace extends JFrame {
      * @param ipady inly filling button along vertical
      * @param ipadx inly filling button along horizontal
      */
-    void makeGridBagConstraints(int gridy, int gridx, int gridwidth, int gridheight, int ipady, int ipadx) {
+    private void makeGridBagConstraints(int gridy, int gridx, int gridwidth, int gridheight, int ipady, int ipadx) {
         gbc.gridy = gridy;
         gbc.gridx = gridx;
         gbc.gridwidth = gridwidth;
@@ -819,7 +819,7 @@ class CalculateFace extends JFrame {
     /**
      * create Simple keyPanel
      */
-    void makeSimpleCalculate() {
+    private void makeSimpleCalculate() {
 
         // создание keyPanel
         keyPanelSimple = new JPanel();
@@ -911,7 +911,7 @@ class CalculateFace extends JFrame {
     /**
      * create Engineer keyPanel
      */
-    void makeEngineerCalculate() {
+    private void makeEngineerCalculate() {
         keyPanelEngineer = new JPanel();
         keyPanelEngineer.setBackground(paneColor);
         keyPanelEngineer.setPreferredSize(new Dimension(WIDTH_SIZE_ENGINEER, HIEGHT_SIZE_KEY));
@@ -922,7 +922,7 @@ class CalculateFace extends JFrame {
     /**
      * create IT keyPanel
      */
-    void makeITCalculate() {
+    private void makeITCalculate() {
         keyPanelIT = new JPanel();
         keyPanelIT.setBackground(paneColor);
         keyPanelIT.setPreferredSize(new Dimension(WIDTH_SIZE_IT, HIEGHT_SIZE_KEY));
@@ -933,7 +933,7 @@ class CalculateFace extends JFrame {
     /**
      * create CardLayout
      */
-    void makeCard() {
+    private void makeCard() {
 
         cardTypeCalc = new CardLayout();            //компоновка
         cardPanel = new JPanel(new CardLayout());                   //колода
@@ -1051,7 +1051,7 @@ class CalculateFace extends JFrame {
     /**
      * repack frame with setting new size
      */
-    void repack () {
+    private void repack () {
                     //height frame
         heightSizeMain = heightSizeText + HIEGHT_SIZE_KEY;
         setPreferredSizePanels();
@@ -1069,7 +1069,7 @@ class CalculateFace extends JFrame {
      * set Preferred Size
      * frame and textPanels
      */
-    void setPreferredSizePanels () {
+    private void setPreferredSizePanels () {
         frame.setPreferredSize(new Dimension(widthSizeText, heightSizeMain));
         scrollinput.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_INPUT));
         labPanel.setPreferredSize(new Dimension(widthSizeText, HIEGHT_SIZE_TEXT_RESULT));
@@ -1080,7 +1080,7 @@ class CalculateFace extends JFrame {
     /**
      * make View Menu
      */
-    void makeViewMenu() {
+    private void makeViewMenu() {
         JMenu jmView = new JMenu("Вид");
             jmView.setFont(MenuFont);
 
@@ -1124,7 +1124,7 @@ class CalculateFace extends JFrame {
     /**
      * make Correct Menu
      */
-    void makeCorrectMenu() {
+    private void makeCorrectMenu() {
         JMenu jmCorrect = new JMenu("Правка");
         jmCorrect.setFont(MenuFont);
 
@@ -1158,7 +1158,7 @@ class CalculateFace extends JFrame {
     /**
      * make Brief Menu
      */
-    void makeBriefMenu() {
+    private void makeBriefMenu() {
         JMenu jmbrief = new JMenu("Справка");
             jmbrief.setFont(MenuFont);
 
@@ -1173,7 +1173,7 @@ class CalculateFace extends JFrame {
     /**
      * make Popup Menu
      */
-    void makePopupMenu() {
+    private void makePopupMenu() {
         jpu = new JPopupMenu();
         var jmiCopy = new JMenuItem(actionCopy);
         var jmiPaste = new JMenuItem(actionPaste);

@@ -2,22 +2,26 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 class CalculateCurrentInput {
-    ArrayList<BigDecimal> arrD;
-    ArrayList <calculate> arrSign;
+    private ArrayList<BigDecimal> arrD;
+    private ArrayList <calculate> arrSign;
 
-     String strNumber;      //inner number
-     BigDecimal dNumber;
+    private String strNumber;      //inner number
+    private BigDecimal dNumber;
      calculate func;
-     BigDecimal  dResult;         //for calculation
-     BigDecimal dNSqrt;              //service sqrt
-     BigDecimal dResultPercent;
-     int figureSqrt;
-     boolean wasNumber;
-     boolean wasSqrt;
-     double doubleResult;
-     double doubleNumber;
+    private BigDecimal  dResult;         //for calculation
+    private BigDecimal dNSqrt;              //service sqrt
+    private BigDecimal dResultPercent;
+    private int figureSqrt;
+    private boolean wasNumber;
+    private boolean wasSqrt;
+    private double doubleResult;
+    private double doubleNumber;
 
-    // calculate result from string
+    /**
+     * calculate result from string
+     * @param strInput string with task to calculate
+     * @return double result of calculation
+     */
     double calculateInput (String strInput) {
 
         func=null;
@@ -151,15 +155,22 @@ class CalculateCurrentInput {
         return doubleResult;
     }
 
+    /**
+     * calculate result Percent
+     * @param funcPerc precеding function to Percent
+     * @param nameSign string presentation precеding function to Percent
+     * @param dResultPercentIn result before precеding function to Percent in double format
+     * @param dNumberIn number between precеding function and function Percent
+     * @return double result of calculation
+     */
+    double calculatePersent (calculate funcPerc, String nameSign, double dResultPercentIn, double dNumberIn) {
 
-    double calculatePersent (calculate funcPerc, String nameSign, double dResultPercentIn, double dNumberIn, double dResultIn) {
-        dResult =new BigDecimal(dResultIn);
         dNumber= new BigDecimal(dNumberIn);
         dResultPercent = new BigDecimal(dResultPercentIn);
         func=funcPerc;
 
         if (func == null) {
-            dResult = Operations.divide(dResult, new BigDecimal(100) );
+            dResult = Operations.divide(dNumber, new BigDecimal(100) );
 
         } else {
             switch (nameSign) {
@@ -167,7 +178,7 @@ class CalculateCurrentInput {
                                                         Operations.multiply(dResultPercent,dNumber),
                                                         new BigDecimal(100));
 
-                case " * ", " / " -> dNumber = Operations.divide(dResult, new BigDecimal(100));
+                case " * ", " / " -> dNumber = Operations.divide(dNumber, new BigDecimal(100));
             }
             dResult = Operations.result(func, dResultPercent, dNumber);
 
