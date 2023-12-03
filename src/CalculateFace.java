@@ -73,7 +73,6 @@ class CalculateFace extends JFrame {
      */
     private GridBagLayout gbag;
     private GridBagConstraints gbc;
-    private Color paneColor, bColor, signColor, bMColor;    //used colors
     private Border borderButton, borderText;                //borders used by elements
 
     /**
@@ -109,13 +108,10 @@ class CalculateFace extends JFrame {
     /**
      * FONTs
      */
-    private Font ButtonFont, ButtonFontM, MenuFont, MenuItemFont, InputFont, ResultFont, LogFont;
+
     private SimpleAttributeSet textInputAttributes;         //for JTextPane
-    static final String FRONT_NAME_TEXT_INPUT = "Arial";
-    static final String FRONT_NAME_TEXT_LOG = "Arial";
-    static final int FRONT_TEXT_LOG = 18;
-    static final int FRONT_TEXT_INPUT = 24;
-    static final int FRONT_TEXT_RESULT = 20;
+
+
 
     /**
      * measure windows calculators
@@ -131,13 +127,6 @@ class CalculateFace extends JFrame {
      * height keyPanel
      * width keyPanels
      */
-    static final int HIEGHT_SIZE_TEXT_RESULT = 28;
-    static final int HIEGHT_SIZE_TEXT_INPUT = 103;
-    static final int HIEGHT_SIZE_TEXT_LOG = 192;
-    static final int HIEGHT_SIZE_KEY = 260;
-    static final int WIDTH_SIZE_SIMPLE = 260 + 20;
-    static final int WIDTH_SIZE_ENGINEER = 600;
-    static final int WIDTH_SIZE_IT = 350;
 
     CalculateFace() {
 
@@ -160,20 +149,6 @@ class CalculateFace extends JFrame {
         strInputFormerSign = "";
         dResultPercent = 0.0;
 
-        //create COLORs
-        paneColor = new Color(231, 223, 232);
-        bColor = new Color(236, 231, 237);
-        signColor = new Color(213, 199, 214);
-        bMColor = new Color(201, 184, 203);
-
-        //create FONTs
-        ButtonFont = new Font("Franklin Gothic Medium", Font.PLAIN, 30);
-        ButtonFontM = new Font("Cambria", Font.PLAIN, 30);
-        MenuFont = new Font("Arial", Font.PLAIN, 15);
-        MenuItemFont = new Font("Arial", Font.PLAIN, 13);
-        InputFont = new Font("Arial", Font.PLAIN, FRONT_TEXT_INPUT);
-        ResultFont = new Font("Arial", Font.PLAIN, FRONT_TEXT_RESULT);
-        LogFont = new Font("Arial", Font.PLAIN, 18);
 
         //GridBagLayout
         gbag = new GridBagLayout();
@@ -222,8 +197,9 @@ class CalculateFace extends JFrame {
          setting height textPanel (height keyPanel = const)
          */
         cardTypeCalc.show(cardPanel, "Simple");
-        widthSizeText = WIDTH_SIZE_SIMPLE;
-        heightSizeText = HIEGHT_SIZE_TEXT_INPUT + HIEGHT_SIZE_TEXT_RESULT;
+        widthSizeText = MySizePanel.WIDTH_SIZE_SIMPLE.get();
+        heightSizeText = MySizePanel.HIEGHT_SIZE_TEXT_INPUT.get()
+                        + MySizePanel.HIEGHT_SIZE_TEXT_RESULT.get();
             scrollLog.setVisible(false);
         repack();
 
@@ -240,57 +216,57 @@ class CalculateFace extends JFrame {
 
         //Numbers
         b1 = createButton(new CreateActionNumberButton("1"),
-                "1", KeyStroke.getKeyStroke('1') ,bColor, ButtonFont);
+                "1", KeyStroke.getKeyStroke('1') ,MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b2 = createButton(new CreateActionNumberButton("2"),
-                "2", KeyStroke.getKeyStroke('2'),bColor, ButtonFont);
+                "2", KeyStroke.getKeyStroke('2'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b3 = createButton(new CreateActionNumberButton("3"),
-                "3", KeyStroke.getKeyStroke('3'),bColor, ButtonFont);
+                "3", KeyStroke.getKeyStroke('3'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b4 = createButton(new CreateActionNumberButton("4"),
-                "4", KeyStroke.getKeyStroke('4'),bColor, ButtonFont);
+                "4", KeyStroke.getKeyStroke('4'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b5 = createButton(new CreateActionNumberButton("5"),
-                "5", KeyStroke.getKeyStroke('5'),bColor, ButtonFont);
+                "5", KeyStroke.getKeyStroke('5'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b6 = createButton(new CreateActionNumberButton("6"),
-                "6", KeyStroke.getKeyStroke('6'),bColor, ButtonFont);
+                "6", KeyStroke.getKeyStroke('6'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b7 = createButton(new CreateActionNumberButton("7"),
-                "7", KeyStroke.getKeyStroke('7'),bColor, ButtonFont);
+                "7", KeyStroke.getKeyStroke('7'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b8 = createButton(new CreateActionNumberButton("8"),
-                "8", KeyStroke.getKeyStroke('8'),bColor, ButtonFont);
+                "8", KeyStroke.getKeyStroke('8'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b9 = createButton(new CreateActionNumberButton("9"),
-                "9", KeyStroke.getKeyStroke('9'),bColor, ButtonFont);
+                "9", KeyStroke.getKeyStroke('9'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         b0 = createButton(new CreateActionNumberButton("0"),
-                "0", KeyStroke.getKeyStroke('0'),bColor, ButtonFont);
+                "0", KeyStroke.getKeyStroke('0'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
         bPoint = createButton(new CreateActionNumberButton("."),
-                ".", KeyStroke.getKeyStroke('.'),bColor, ButtonFont);
+                ".", KeyStroke.getKeyStroke('.'),MyColors.COLOR_BUTTON.get(), MyFonts.FONT_BUTTON.get());
 
 
         //Operations
         bPlus = createButton(new CreateSignButton(" + "),
-                " + ", KeyStroke.getKeyStroke('+'), signColor, ButtonFont);
+                " + ", KeyStroke.getKeyStroke('+'), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
         bMinus = createButton(new CreateSignButton(" - "),
-                " - ", KeyStroke.getKeyStroke('-'), signColor, ButtonFont);
+                " - ", KeyStroke.getKeyStroke('-'), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
         bDivide = createButton(new CreateSignButton(" / "),
-                " / ", KeyStroke.getKeyStroke('/'), signColor, ButtonFont);
+                " / ", KeyStroke.getKeyStroke('/'), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
         bMultiply = createButton(new CreateSignButton(" * "),
-                " * ", KeyStroke.getKeyStroke('*'), signColor, ButtonFont);
+                " * ", KeyStroke.getKeyStroke('*'), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
         bPercent = createButton(new CreateSignButton(" % "),
-                " % ", KeyStroke.getKeyStroke('%'), signColor, ButtonFont);
+                " % ", KeyStroke.getKeyStroke('%'), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
         bResult = createButton(new CreateSignButton(" = "),
-                " = ", KeyStroke.getKeyStroke('='), signColor, ButtonFont);
+                " = ", KeyStroke.getKeyStroke('='), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
         bRadical = createButton(new CreateSignButton(" √ "),
-                " √ ", KeyStroke.getKeyStroke("sqrt"), signColor, ButtonFont);
+                " √ ", KeyStroke.getKeyStroke("sqrt"), MyColors.COLOR_SIGN.get(), MyFonts.FONT_BUTTON.get());
 
 
         //Delete and Memory
         bClear = createButton(new CreateWorkButton("AC"),
-                "AC", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), bMColor, ButtonFontM);
+                "AC", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), MyColors.COLOR_BUTTON_MEMORY.get(), MyFonts.FONT_BUTTON_MEMORY.get());
         bDel = createButton(new CreateWorkButton("C"),
-                "C", KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), bMColor, ButtonFontM);
+                "C", KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), MyColors.COLOR_BUTTON_MEMORY.get(), MyFonts.FONT_BUTTON_MEMORY.get());
         bMemoryAdd = createButton(new CreateWorkButton("M+"),
-                "M+", KeyStroke.getKeyStroke(KeyEvent.VK_ADD, InputEvent.CTRL_DOWN_MASK), bMColor, ButtonFontM);
+                "M+", KeyStroke.getKeyStroke(KeyEvent.VK_ADD, InputEvent.CTRL_DOWN_MASK), MyColors.COLOR_BUTTON_MEMORY.get(), MyFonts.FONT_BUTTON_MEMORY.get());
         bMemoryDel = createButton(new CreateWorkButton("M-"),
-                "M-", KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, InputEvent.CTRL_DOWN_MASK), bMColor, ButtonFontM);
+                "M-", KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, InputEvent.CTRL_DOWN_MASK), MyColors.COLOR_BUTTON_MEMORY.get(), MyFonts.FONT_BUTTON_MEMORY.get());
         bMemoryHold = createButton(new CreateWorkButton("MR"),
-                "MR", KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), bMColor, ButtonFontM);
+                "MR", KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), MyColors.COLOR_BUTTON_MEMORY.get(), MyFonts.FONT_BUTTON_MEMORY.get());
 
         blockedAll(bMemoryHold);
     }
@@ -769,7 +745,7 @@ class CalculateFace extends JFrame {
      */
     private void repack () {
         //height frame
-        heightSizeMain = heightSizeText + HIEGHT_SIZE_KEY;
+        heightSizeMain = heightSizeText + MySizePanel.HIEGHT_SIZE_KEY.get();
         setPreferredSizePanels();
         frame.pack();
         //focus necessary panel
@@ -782,17 +758,17 @@ class CalculateFace extends JFrame {
      */
     private void setPreferredSizePanels () {
         frame.setPreferredSize(new Dimension(widthSizeText, heightSizeMain));
-        scrollinput.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_INPUT));
-        labPanel.setPreferredSize(new Dimension(widthSizeText, HIEGHT_SIZE_TEXT_RESULT));
-        scrollLog.setPreferredSize(new Dimension(widthSizeText,HIEGHT_SIZE_TEXT_LOG));
+        scrollinput.setPreferredSize(new Dimension(widthSizeText, MySizePanel.HIEGHT_SIZE_TEXT_INPUT.get()));
+        labPanel.setPreferredSize(new Dimension(widthSizeText, MySizePanel.HIEGHT_SIZE_TEXT_RESULT.get()));
+        scrollLog.setPreferredSize(new Dimension(widthSizeText,MySizePanel.HIEGHT_SIZE_TEXT_LOG.get()));
     }
 
     /**
      *show up Result font
      */
     private void setFontBoldResult (){
-        textRezult.setFont(InputFont);
-        StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_RESULT);
+        textRezult.setFont(MyFonts.FONT_TEXT_INPUT.get());
+        StyleConstants.setFontSize(textInputAttributes, MyFontSizes.FRONT_SIZE_TEXT_RESULT.get());
         textInput.setParagraphAttributes(textInputAttributes, true);
     }
 
@@ -800,8 +776,8 @@ class CalculateFace extends JFrame {
      *show up InputPanel font
      */
     private void setFontBoldInput (){
-        textRezult.setFont(ResultFont);
-        StyleConstants.setFontSize(textInputAttributes, FRONT_TEXT_INPUT);
+        textRezult.setFont(MyFonts.FONT_TEXT_RESULT.get());
+        StyleConstants.setFontSize(textInputAttributes,MyFontSizes.FRONT_SIZE_TEXT_INPUT.get());
         textInput.setParagraphAttributes(textInputAttributes, true);
     }
 
@@ -849,8 +825,8 @@ class CalculateFace extends JFrame {
 
         // create keyPanel
         keyPanelSimple = new JPanel();
-        keyPanelSimple.setBackground(paneColor);
-        keyPanelSimple.setPreferredSize(new Dimension(WIDTH_SIZE_SIMPLE, HIEGHT_SIZE_KEY));
+        keyPanelSimple.setBackground(MyColors.COLOR_PANE.get());
+        keyPanelSimple.setPreferredSize(new Dimension(MySizePanel.WIDTH_SIZE_SIMPLE.get(), MySizePanel.HIEGHT_SIZE_KEY.get()));
 
         // GridBagLayout keyPanel
         keyPanelSimple.setLayout(gbag);
@@ -938,8 +914,8 @@ class CalculateFace extends JFrame {
      */
     private void makeEngineerCalculate() {
         keyPanelEngineer = new JPanel();
-        keyPanelEngineer.setBackground(paneColor);
-        keyPanelEngineer.setPreferredSize(new Dimension(WIDTH_SIZE_ENGINEER, HIEGHT_SIZE_KEY));
+        keyPanelEngineer.setBackground(MyColors.COLOR_PANE.get());
+        keyPanelEngineer.setPreferredSize(new Dimension(MySizePanel.WIDTH_SIZE_ENGINEER.get(), MySizePanel.HIEGHT_SIZE_KEY.get()));
 
     }
 
@@ -948,8 +924,8 @@ class CalculateFace extends JFrame {
      */
     private void makeITCalculate() {
         keyPanelIT = new JPanel();
-        keyPanelIT.setBackground(paneColor);
-        keyPanelIT.setPreferredSize(new Dimension(WIDTH_SIZE_IT, HIEGHT_SIZE_KEY));
+        keyPanelIT.setBackground(MyColors.COLOR_PANE.get());
+        keyPanelIT.setPreferredSize(new Dimension(MySizePanel.WIDTH_SIZE_IT.get(), MySizePanel.HIEGHT_SIZE_KEY.get()));
 
     }
 
@@ -959,7 +935,7 @@ class CalculateFace extends JFrame {
     private void makeTextPanel() {
 
         textPanel = new JPanel();
-        textPanel.setBackground(paneColor);
+        textPanel.setBackground(MyColors.COLOR_PANE.get());
         textPanel.setLayout(gbag);
         //textPanel.setPreferredSize(new Dimension(WidthSize,HeightSizeText)); автоматически
         borderText = BorderFactory.createLineBorder(Color.BLACK, 2);
@@ -967,10 +943,10 @@ class CalculateFace extends JFrame {
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
 
         textInput = new JTextPane();
-        textInput.setBackground(paneColor);
+        textInput.setBackground(MyColors.COLOR_PANE.get());
         textInputAttributes = new SimpleAttributeSet();
         StyleConstants.setAlignment(textInputAttributes, StyleConstants.ALIGN_RIGHT);
-        StyleConstants.setFontFamily(textInputAttributes, FRONT_NAME_TEXT_INPUT);
+        StyleConstants.setFontFamily(textInputAttributes, MyFontNames.FRONT_NAME_TEXT_INPUT.get());
         scrollinput = new JScrollPane(textInput,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -979,7 +955,7 @@ class CalculateFace extends JFrame {
 
         textRezult = new JLabel("0");
         labPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        labPanel.setBackground(bColor);
+        labPanel.setBackground(MyColors.COLOR_BUTTON.get());
         //labPanel.setPreferredSize(new Dimension(widthSizeText, SIZE_TEXT_RESULT));
         labPanel.add(textRezult);
 
@@ -987,11 +963,11 @@ class CalculateFace extends JFrame {
         setFontBoldInput();
 
         textLog = new JTextPane();
-        textLog.setBackground(bColor);
+        textLog.setBackground(MyColors.COLOR_BUTTON.get());
         var textLogAttributes = new SimpleAttributeSet();
         StyleConstants.setAlignment(textLogAttributes, StyleConstants.ALIGN_RIGHT);
-        StyleConstants.setFontFamily(textLogAttributes, FRONT_NAME_TEXT_LOG);
-        StyleConstants.setFontSize(textLogAttributes, FRONT_TEXT_LOG);
+        StyleConstants.setFontFamily(textLogAttributes, MyFontNames.FRONT_NAME_TEXT_LOG.get());
+        StyleConstants.setFontSize(textLogAttributes, MyFontSizes.FRONT_SIZE_TEXT_LOG.get());
         StyleConstants.setForeground(textLogAttributes, Color.GRAY);
         textLog.setParagraphAttributes(textLogAttributes, true);
         scrollLog = new JScrollPane(textLog,
@@ -1021,17 +997,17 @@ class CalculateFace extends JFrame {
             switch (e.getActionCommand()) {
                 case "Обычный" -> {
                     cardTypeCalc.show(cardPanel, "Simple");
-                    widthSizeText = WIDTH_SIZE_SIMPLE;
+                    widthSizeText = MySizePanel.WIDTH_SIZE_SIMPLE.get();
                     repack();
                 }
                 case "Инженерный" -> {
                     cardTypeCalc.show(cardPanel, "Engineer");
-                    widthSizeText = WIDTH_SIZE_ENGINEER;
+                    widthSizeText = MySizePanel.WIDTH_SIZE_ENGINEER.get();
                     repack();
                 }
                 case "IT" -> {
                     cardTypeCalc.show(cardPanel, "ITcalc");
-                    widthSizeText = WIDTH_SIZE_IT;
+                    widthSizeText = MySizePanel.WIDTH_SIZE_IT.get();
                     repack();
                 }
                 case "Копировать" -> {
@@ -1082,7 +1058,9 @@ class CalculateFace extends JFrame {
                 jmiCopyLogPopup.setVisible(true);
 
                 //height textPanel (height keyPanel = const)
-                heightSizeText = HIEGHT_SIZE_TEXT_INPUT + HIEGHT_SIZE_TEXT_RESULT + HIEGHT_SIZE_TEXT_LOG;
+                heightSizeText = MySizePanel.HIEGHT_SIZE_TEXT_INPUT.get()
+                        + MySizePanel.HIEGHT_SIZE_TEXT_RESULT.get()
+                        + MySizePanel.HIEGHT_SIZE_TEXT_LOG.get();
                 scrollLog.setVisible(true);
                 repack();
             } else{
@@ -1094,7 +1072,8 @@ class CalculateFace extends JFrame {
                 jmiCopyLogPopup.setVisible(false);
 
                 //height textPanel (height keyPanel = const)
-                heightSizeText = HIEGHT_SIZE_TEXT_INPUT + HIEGHT_SIZE_TEXT_RESULT;
+                heightSizeText = MySizePanel.HIEGHT_SIZE_TEXT_INPUT.get()
+                        + MySizePanel.HIEGHT_SIZE_TEXT_RESULT.get();
                 scrollLog.setVisible(false);
                 repack();
             }
@@ -1106,22 +1085,22 @@ class CalculateFace extends JFrame {
      */
     private void makeViewMenu() {
         JMenu jmView = new JMenu("Вид");
-            jmView.setFont(MenuFont);
+            jmView.setFont(MyFonts.FONT_MENU.get());
 
         actionSimple = new MakeMenuItem("Обычный", KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.ALT_DOWN_MASK));
             jmiSimple = new JRadioButtonMenuItem(actionSimple);
-            jmiSimple.setFont(MenuItemFont);
+            jmiSimple.setFont(MyFonts.FONT_MENU_ITEM.get());
             jmiSimple.setSelected(true);
         jmView.add(jmiSimple);
 
         actionEngineer = new MakeMenuItem("Инженерный", KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK));
             jmiEngineer = new JRadioButtonMenuItem(actionEngineer);
-            jmiEngineer.setFont(MenuItemFont);
+            jmiEngineer.setFont(MyFonts.FONT_MENU_ITEM.get());
         jmView.add(jmiEngineer);
 
         actionIT = new MakeMenuItem("IT", KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
             jmiIT = new JRadioButtonMenuItem(actionIT);
-            jmiIT.setFont(MenuItemFont);
+            jmiIT.setFont(MyFonts.FONT_MENU_ITEM.get());
         jmView.add(jmiIT);
         jmView.addSeparator();
 
@@ -1133,11 +1112,11 @@ class CalculateFace extends JFrame {
 
          actionLog = new MakeLogMenuItem("Журнал", KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_DOWN_MASK)) ;
          jchbLog = new JCheckBoxMenuItem(actionLog);
-            jchbLog.setFont(MenuItemFont);
+            jchbLog.setFont(MyFonts.FONT_MENU_ITEM.get());
         jmView.add(jchbLog);
 
         var jchbGroupDigit = new JCheckBoxMenuItem("Числовые разряды");
-            jchbGroupDigit.setFont(MenuItemFont);
+            jchbGroupDigit.setFont(MyFonts.FONT_MENU_ITEM.get());
             jchbGroupDigit.setToolTipText("Группировка цифр по разрядам");
         jmView.add(jchbGroupDigit);
 
@@ -1150,29 +1129,29 @@ class CalculateFace extends JFrame {
      */
     private void makeCorrectMenu() {
         JMenu jmCorrect = new JMenu("Правка");
-        jmCorrect.setFont(MenuFont);
+        jmCorrect.setFont(MyFonts.FONT_MENU.get());
 
         actionCopy = new MakeMenuItem("Копировать", KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         var jmiCopy = new JMenuItem(actionCopy);
-            jmiCopy.setFont(MenuItemFont);
+            jmiCopy.setFont(MyFonts.FONT_MENU_ITEM.get());
             jmCorrect.add(jmiCopy);
 
         actionPaste = new MakeMenuItem("Вставить", KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
         var jmiPaste = new JMenuItem(actionPaste);
-            jmiPaste.setFont(MenuItemFont);
+            jmiPaste.setFont(MyFonts.FONT_MENU_ITEM.get());
             jmCorrect.add(jmiPaste);
         jmCorrect.addSeparator();
 
         var jmiLog = new JMenu("Журнал");
-            jmiLog.setFont(MenuItemFont);
+            jmiLog.setFont(MyFonts.FONT_MENU_ITEM.get());
             jmCorrect.add(jmiLog);
         actionClearLog = new MakeMenuItem("Очистить журнал", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, InputEvent.ALT_DOWN_MASK));
         jmiClearLog = new JMenuItem(actionClearLog);
-             jmiClearLog.setFont(MenuItemFont);
+             jmiClearLog.setFont(MyFonts.FONT_MENU_ITEM.get());
              jmiLog.add(jmiClearLog) ;
         actionCopyLog = new MakeMenuItem("Копировать журнал", KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_DOWN_MASK));
         jmiCopyLog = new JMenuItem(actionCopyLog);
-             jmiCopyLog.setFont(MenuItemFont);
+             jmiCopyLog.setFont(MyFonts.FONT_MENU_ITEM.get());
              jmiLog.add(jmiCopyLog) ;
 
         jmb.add(jmCorrect);
@@ -1184,12 +1163,12 @@ class CalculateFace extends JFrame {
      */
     private void makeBriefMenu() {
         JMenu jmbrief = new JMenu("Справка");
-            jmbrief.setFont(MenuFont);
+            jmbrief.setFont(MyFonts.FONT_MENU.get());
 
         actionBrief = new MakeMenuItem("Посмотреть справку", KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
         var jmiBrief = new JMenuItem(actionBrief);
             jmbrief.add(jmiBrief);
-            jmiBrief.setFont(MenuItemFont);
+            jmiBrief.setFont(MyFonts.FONT_MENU_ITEM.get());
         jmb.add(jmbrief);
     }
 
